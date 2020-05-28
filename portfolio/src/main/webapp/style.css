@@ -1,3 +1,7 @@
+body {
+  background-color: #fffde6;
+}
+
 #topnav {
   margin-left: auto;
   margin-right: auto;
@@ -7,7 +11,23 @@
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  width: 750px;
+}
+
+#home-wrapper {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 100px;
+  background-color: #fffde6;
+}
+
+#icon {
+  border-radius: 50%;
+  width: 450px;
+  height: auto;
+  grid-column-start: 1;
+  grid-column-end: 2;
 }
 
 #greeting-container {
