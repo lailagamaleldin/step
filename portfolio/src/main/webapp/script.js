@@ -13,16 +13,50 @@
 // limitations under the License.
 
 /**
+ * Reads a text file and returns an array where each element represents a
+ * single line.
+ */
+function readFile(filePath) {
+
+	var lines = []
+
+	fetch(filePath)
+		.then(
+			function (response) {
+                // Checking for error status.
+				if (response.status != 200) {
+					console.log('Error with status code: ' + response.status);
+					return;
+				}
+
+                // Splitting on the parameter.
+				response.text().then(function (text) {
+					splitLines = text.split('\n');
+					splitLines.forEach(line => lines.push(line));
+				})
+
+			}
+		).catch(function (err) {
+			console.log('Error: ', err);
+		});
+
+
+	return lines;
+}
+
+// Compiling the facts into an array.
+let facts = readFile('resources/facts.txt');
+
+
+/**
  * Adds a random fun fact to the page.
  */
 function addRandomFunFact() {
-  const facts =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
 
-  // Pick a random greeting.
-  const fact = facts[Math.floor(Math.random() * facts.length)];
+    // Getting a random fact.
+	let fact = facts[Math.floor(Math.random() * facts.length)];
 
-  // Add it to the page.
-  const factContainer = document.getElementById('fact-container');
-  factContainer.innerText = fact;
+	// Add it to the page.
+	const factContainer = document.getElementById('fact-container');
+	factContainer.innerText = fact;
 }
