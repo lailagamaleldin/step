@@ -13,12 +13,12 @@
 // limitations under the License.
 
 /**
- * Reads a text file and returns an array where each element represents a
- * single line.
+ * Reads a text file and returns an array of the file contents split on the
+ * specified delimiter.
  */
-function readFile(filePath) {
+function readFile(filePath, split, delimiter = ' ') {
 
-	var lines = []
+	var l = []
 
 	fetch(filePath)
 		.then(
@@ -31,8 +31,15 @@ function readFile(filePath) {
 
                 // Splitting on the parameter.
 				response.text().then(function (text) {
-					splitLines = text.split('\n');
-					splitLines.forEach(line => lines.push(line));
+                    var splitText;
+
+                    if (split) {
+                        splitText = text.split(delimiter);
+                    } else {
+                        splitText = text.split();
+                    }
+					
+					splitText.forEach(t => l.push(t));
 				})
 
 			}
@@ -41,11 +48,11 @@ function readFile(filePath) {
 		});
 
 
-	return lines;
+	return l;
 }
 
 // Compiling the facts into an array.
-let facts = readFile('resources/facts.txt');
+let facts = readFile('resources/facts.txt', true, '\n');
 
 
 /**
