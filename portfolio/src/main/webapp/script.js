@@ -18,7 +18,7 @@
  */
 function readFile(filePath, split, delimiter = ' ') {
 
-	var contents = []
+	var contents = [];
 
     // Retreiving file contents.
 	fetch(filePath)
