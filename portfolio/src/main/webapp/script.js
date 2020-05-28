@@ -18,7 +18,7 @@
  */
 function readFile(filePath, split, delimiter = ' ') {
 
-	var l = []
+	var contents = []
 
 	fetch(filePath)
 		.then(
@@ -38,9 +38,9 @@ function readFile(filePath, split, delimiter = ' ') {
                     } else {
                         splitText = text.split();
                     }
-					
-					splitText.forEach(t => l.push(t));
-				})
+
+					splitText.forEach(elem => contents.push(elem));
+				});
 
 			}
 		).catch(function (err) {
@@ -48,7 +48,7 @@ function readFile(filePath, split, delimiter = ' ') {
 		});
 
 
-	return l;
+	return contents;
 }
 
 // Compiling the facts into an array.
