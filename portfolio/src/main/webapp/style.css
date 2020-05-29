@@ -119,3 +119,20 @@ body {
   padding: 0;
   margin: 0;
 }
+
+#project-wrapper {
+  display: grid;
+  grid-template-columns: auto auto;  
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  position:absolute;
+  column-gap:10%;
+  top:50%;
+  transform: translateY(-50%);
+}
+
+.project img {
+    width:150px;
+    height:150px;
+}
