@@ -3,19 +3,19 @@
     
    <head>
       <meta charset="UTF-8">
-      <title>Laila's Portfolio</title>
+      <title>Laila Gamaleldin</title>
       <link rel="stylesheet" href="style.css">
       <script src="script.js"></script>
    </head>
 
    <body>
       <div id="topnav">
-         <a href="index.html">Home</a>
-         <a href="projects.html">Projects</a>
-         <a href="resume.html">Resume</a>
-         <a href="https://lailamgamaleldin.wixsite.com/website">UI/UX</a>
-         <a 
-            href="https://www.linkedin.com/in/laila-gamaleldin-30b699168">Linkedin</a>
+         <div class="link"><a href="index.html">Home</a></div> 
+         <div class="link"><a href="projects.html">Projects</a></div>
+         <div class="link"><a href="resume.html">Resume</a></div>
+         <div class="link"> <a href="https://lailamgamaleldin.wixsite.com/website" target="_blank">UI/UX</a></div>
+         <div class="link"><a 
+            href="https://www.linkedin.com/in/laila-gamaleldin-30b699168" target="_blank">Linkedin</a></div>
       </div>
 
       <div id="content">
@@ -45,14 +45,16 @@
             <li class="misc-about">Playing around on Photoshop</li>
          </ul>
          </p>  
-         <p class="misc-about">Click <a href="projects.html" class="accent">here</a> to view my projects,
+         <p class="misc-about">Click <a href="projects.html" class="accent">
+             here</a> to view my projects,
             <a href="resume.html" class="accent">here</a> to view my resume,
-            and <a href="https://lailamgamaleldin.wixsite.com/website" class="accent">here</a>
+            and <a href="https://lailamgamaleldin.wixsite.com/website" 
+            class="accent">here</a>
             to view my UI/UX portfolio.
          </p>
          <p class="misc-about">Or click here for a random fun fact:</p>
          <button onclick="addRandomFunFact()" id="random-button">
-             <t id="button-text">Give me a fun fact!</t></button>
+             Give me a fun fact!</button>
          <div id="fact-container"></div>
       </div>
       </div>
