@@ -19,21 +19,58 @@ body {
 #home-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-column-gap: 100px;
   background-color: #fffde6;
   position:absolute;
   top:50%;
-  transform: translateY(-50%);
+  transform: translate(-20%, -50%);
+}
+
+#home-header, h1 {
+  font-size: 70px;
+  color: #4B0082;
+  text-transform: lowercase;
+  font-weight: 600;
+  letter-spacing: 4px;
+  min-width: 400px;
+  margin-bottom: 20px;
+}
+
+.about-me {
+  font-size: 18px;
+  color: #4B0082;
+  font-weight: 600;
+  min-width: 400px;
+}
+
+.misc-about {
+  font-size: 14px;
+  color: #4B0082;
+  font-weight: 600;
+  min-width: 400px;  
+}
+
+.accent {
+  color: #c41eb6;
+  text-decoration: underline;
 }
 
 #icon {
   border-radius: 50%;
-  width: 450px;
+  width: 400px;
   height: auto;
-  grid-column-start: 1;
-  grid-column-end: 2;
+  margin-top:10%;
+}
+
+#random-button {
+  background-color: #c41eb6;   
+}
+
+#button-text {
+  color: white;
+  font-size: 14px;
 }
 
 #greeting-container {
   margin-top: 20px;
+  color: #c41eb6;
 }
