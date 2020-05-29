@@ -26,8 +26,8 @@ function readFile(filePath, split, delimiter = ' ') {
 			function (response) {
                 // Checking for error status.
 				if (response.status != 200) {
-					console.log('Error with status code: ' + response.status);
-					return;
+				  console.log('Error with status code: ' + response.status);
+				  return;
 				}
 
                 // Splitting on the parameter.
@@ -35,9 +35,9 @@ function readFile(filePath, split, delimiter = ' ') {
                     var splitText;
 
                     if (split) {
-                        splitText = text.split(delimiter);
+                      splitText = text.split(delimiter);
                     } else {
-                        splitText = text.split();
+                      splitText = text.split();
                     }
 
 					splitText.forEach(elem => contents.push(elem));
@@ -45,7 +45,7 @@ function readFile(filePath, split, delimiter = ' ') {
 
 			}
 		).catch(function (err) {
-			console.log('Error: ', err);
+		  console.log('Error: ', err);
 		});
 
 
