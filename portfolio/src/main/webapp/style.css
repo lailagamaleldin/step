@@ -100,12 +100,22 @@ body {
   margin-top: 20px;
 }
 
-#greeting-container t {
-  color:white;  
+.section-header {
+  color:#c41eb6;
+  font-size: 38px;
+  text-decoration: underline;
 }
 
-.section-header {
-    color:#4B0082;
-    font-size: 30px;
-    text-decoration: underline;
+.title-institution, h3 {
+  color: #4B0082;
+  font-size: 20px;
+  padding: 0;
+  margin: 0;  
+}
+
+.resume-content h4 {
+  color:#c41eb6;
+  font-style: italic;
+  padding: 0;
+  margin: 0;
 }
