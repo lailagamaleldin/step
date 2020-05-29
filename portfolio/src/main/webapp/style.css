@@ -98,5 +98,14 @@ body {
 
 #greeting-container {
   margin-top: 20px;
-  color: #c41eb6;
+}
+
+#greeting-container t {
+  color:white;  
+}
+
+.section-header {
+    color:#4B0082;
+    font-size: 30px;
+    text-decoration: underline;
 }
