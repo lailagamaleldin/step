@@ -1,18 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-  </head>
-  <body>
-    <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+    
+   <head>
+      <meta charset="UTF-8">
+      <title>Laila Gamaleldin</title>
+      <link rel="stylesheet" href="style.css">
+      <script src="script.js"></script>
+   </head>
+
+   <body>
+      <div id="topnav">
+         <div class="link"><a href="index.html">Home</a></div> 
+         <div class="link"><a href="projects.html">Projects</a></div>
+         <div class="link"><a href="resume.html">Resume</a></div>
+         <div class="link"> <a href="https://lailamgamaleldin.wixsite.com/website" target="_blank">UI/UX</a></div>
+         <div class="link"><a 
+            href="https://www.linkedin.com/in/laila-gamaleldin-30b699168" target="_blank">Linkedin</a></div>
+      </div>
+
+      <div id="content">
+         <div id="home-wrapper">
+         <div id="home-left">    
+         <img id="icon" src="images/me.jpg"/>
+         </div>
+         <div id="home-right">
+         <h1 id="home-header">Hi, I'm Laila!</h1>    
+         <p class="about-me">
+            I'm a rising junior at <t class="accent">Brown University</t>
+            studying Computer Science with concentrations in <t class="accent">
+            visual computing</t> and <t class="accent">artificial 
+            intelligence</t>.
+            <br>
+            <br>
+            I'm fascinated by the <t class="accent">intersections</t> between
+            tech and other domains such as <t class="accent">healthcare</t>,
+            <t class="accent">education</t>, and <t class="accent">urban design</t>
+            . I hope to build tools for practitioners in these areas and
+            beyond in order to best serve their needs.
+         </p>
+         <p class="misc-about">When I'm not coding, you can find me:
+         <ul>
+            <li class="misc-about">Running through one of Providence's many parks</li>
+            <li class="misc-about">Reading in my hammock</li>
+            <li class="misc-about">Playing around on Photoshop</li>
+         </ul>
+         </p>  
+         <p class="misc-about">Click <a href="projects.html" class="accent">
+             here</a> to view my projects,
+            <a href="resume.html" class="accent" get="_blank">here</a> to view my resume,
+            and <a href="https://lailamgamaleldin.wixsite.com/website" 
+            class="accent" get="_blank">here</a>
+            to view my UI/UX portfolio.
+         </p>
+         <p class="misc-about">Or click here for a random fun fact:</p>
+         <button onclick="addRandomFunFact()" id="random-button">
+             Give me a fun fact!</button>
+         <div id="fact-container"></div>
+      </div>
+      </div>
     </div>
-  </body>
+   </body>
 </html>

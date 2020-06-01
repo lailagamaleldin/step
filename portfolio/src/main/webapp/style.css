@@ -1,9 +1,138 @@
-#content {
+body {
+  background-color: #fffde6;
+}
+
+#topnav {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;  
   margin-left: auto;
   margin-right: auto;
   width: 650px;
 }
 
+.link, .link a:visited {
+  font-size: 13px;
+  margin-right: 20px;
+  font-weight: 600;
+  letter-spacing: 0.75px;
+}
+
+.link a {
+  font-size: 17px;  
+  color: red;
+  padding-bottom: 0px;
+  text-decoration: none;
+  border-bottom: 5px solid #4B0082;
+}
+
+.link a:hover {
+  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 -2 20 8'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift 1s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23000000' stroke-width='3' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+  background-position: bottom;
+  background-repeat: repeat-x;
+  background-size: 15px;
+  border-bottom: 0;
+  padding-bottom: 6px;
+  text-decoration: none;
+}
+
+#content {
+  margin-left: auto;
+  margin-right: auto;
+  width: 750px;
+  justify-content: center;
+  align-content: center;
+}
+
+#home-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #fffde6;
+  position:absolute;
+  top:50%;
+  transform: translate(-20%, -50%);
+}
+
+#home-header, h1 {
+  font-size: 70px;
+  color: #4B0082;
+  text-transform: lowercase;
+  font-weight: 600;
+  letter-spacing: 4px;
+  min-width: 400px;
+  margin-bottom: 20px;
+}
+
+.about-me {
+  font-size: 18px;
+  color: #4B0082;
+  font-weight: 600;
+  min-width: 400px;
+}
+
+.misc-about {
+  font-size: 14px;
+  color: #4B0082;
+  font-weight: 600;
+  min-width: 400px;  
+}
+
+.accent {
+  color: #c41eb6;
+  text-decoration: underline;
+}
+
+#icon {
+  border-radius: 50%;
+  width: 400px;
+  height: auto;
+  margin-top:10%;
+}
+
+#random-button {
+  background-color: #c41eb6;
+  font-size: 12px;
+  border-radius: 4px;
+  color: white;
+  margin-bottom: 2px;   
+}
+
 #greeting-container {
   margin-top: 20px;
+}
+
+.section-header {
+  color:#c41eb6;
+  font-size: 38px;
+  text-decoration: underline;
+}
+
+.title-institution, h3 {
+  color: #4B0082;
+  font-size: 20px;
+  padding: 0;
+  margin: 0;  
+}
+
+.resume-content h4 {
+  color:#c41eb6;
+  font-style: italic;
+  padding: 0;
+  margin: 0;
+}
+
+#project-wrapper {
+  display: grid;
+  grid-template-columns: auto auto;  
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  position:absolute;
+  column-gap:10%;
+  top:50%;
+  transform: translateY(-50%);
+}
+
+.project img {
+    width:150px;
+    height:150px;
 }
