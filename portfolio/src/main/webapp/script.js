@@ -72,19 +72,23 @@ function addRandomFunFact() {
 function addGreeting() {
     const responsePromise = fetch('/data');
     responsePromise.then(handleResponse);
-    //const quote = await response.text();
-    //document.getElementById('greeting-container').innerText = quote;
 }
 
 function handleResponse(response) {
-    // response.text() returns a Promise, because the response is a stream of
-    // content and not a simple variable.
-    const textPromise = response.text();
-
-    // When the response is converted to text, pass the result into the
-    // addQuoteToDom() function.
-    textPromise.then(addQuoteToDom);
+    json = response.json();
+    console.log(json);
+    json.then(addQuoteToDom);
 }
+
+// function handleResponse(response) {
+//     // response.text() returns a Promise, because the response is a stream of
+//     // content and not a simple variable.
+//     const textPromise = response.text();
+
+//     // When the response is converted to text, pass the result into the
+//     // addQuoteToDom() function.
+//     textPromise.then(addQuoteToDom);
+// }
 
 /** Adds a random quote to the DOM. */
 function addQuoteToDom(quote) {
