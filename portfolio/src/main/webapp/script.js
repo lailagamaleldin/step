@@ -68,3 +68,28 @@ function addRandomFunFact() {
 	const factContainer = document.getElementById('fact-container');
 	factContainer.innerText = fact;
 }
+
+function addGreeting() {
+    const responsePromise = fetch('/data');
+    responsePromise.then(handleResponse);
+    //const quote = await response.text();
+    //document.getElementById('greeting-container').innerText = quote;
+}
+
+function handleResponse(response) {
+    // response.text() returns a Promise, because the response is a stream of
+    // content and not a simple variable.
+    const textPromise = response.text();
+
+    // When the response is converted to text, pass the result into the
+    // addQuoteToDom() function.
+    textPromise.then(addQuoteToDom);
+}
+
+/** Adds a random quote to the DOM. */
+function addQuoteToDom(quote) {
+  console.log('Adding quote to dom: ' + quote);
+
+  const quoteContainer = document.getElementById('greeting-container');
+  quoteContainer.innerText = quote;
+}
