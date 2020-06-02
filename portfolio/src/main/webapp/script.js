@@ -71,9 +71,7 @@ function addRandomFunFact() {
 
 /** Fetching the user's comment. */
 function addComment() {
-    console.log("here");
     const responsePromise = fetch('/comment');
-    console.log("hellooooo");
     responsePromise.then(handleResponse);
 }
 

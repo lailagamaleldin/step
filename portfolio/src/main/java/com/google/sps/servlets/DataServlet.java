@@ -24,36 +24,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that handles functionality for commenting. */
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
+  // Arraylist storing user comments.
   List<String> comments = new ArrayList<>();  
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws IOException {        
     response.setContentType("text/html;");
+
+    // Creating and parsing the JSON object.
     Gson gson = new Gson();
     String json = gson.toJson(comments);
     response.getWriter().println(json);
   }
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws IOException {
+
+    // Parsing the user's input into the text box.        
     String comment = request.getParameter("text-input");
-    System.out.println(comment);
-    System.out.println(comments.size());
     comments.add(comment);
 
-    Gson gson = new Gson();
-    String json = gson.toJson(comments);
-    response.getWriter().println(json);
-
-    // Respond with the result.
-    response.setContentType("text/html;");
-    response.getWriter().println(comment);
-
-    // Redirect back to the HTML page.
+    // Redirect back to the page where the user entered their comment.
     response.sendRedirect("/comments.html");
   }
 }
