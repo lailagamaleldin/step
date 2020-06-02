@@ -25,10 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
+@WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
-  List<String> comments = new ArrayList<>(Arrays.asList("hello", "goodbye"));  
+  List<String> comments = new ArrayList<>();  
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -37,5 +37,23 @@ public class DataServlet extends HttpServlet {
     String json = gson.toJson(comments);
     System.out.println(json);
     response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String comment = request.getParameter("text-input");
+    
+    comments.add(comment);
+
+    // Respond with the result.
+    response.setContentType("text/html;");
+    response.getWriter().println(comment);
+
+    // Redirect back to the HTML page.
+    response.sendRedirect("/comments.html");
+
+    // Respond with the result.
+    response.setContentType("text/html;");
+    response.getWriter().println(comment);
   }
 }

@@ -70,7 +70,7 @@ function addRandomFunFact() {
 }
 
 function addGreeting() {
-    const responsePromise = fetch('/data');
+    const responsePromise = fetch('/comments');
     responsePromise.then(handleResponse);
 }
 
