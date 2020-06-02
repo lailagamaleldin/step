@@ -94,6 +94,6 @@ function handleResponse(response) {
 function addQuoteToDom(quote) {
   console.log('Adding quote to dom: ' + quote);
 
-  const quoteContainer = document.getElementById('greeting-container');
+  const quoteContainer = document.getElementById('comment-container');
   quoteContainer.innerText = quote;
 }
