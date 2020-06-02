@@ -6,7 +6,7 @@
       <link rel="stylesheet" href="style.css">
       <script src="script.js"></script>
    </head>
-   <body>
+   <body onload="javascript:addComment()">
        <div id="topnav">
          <div class="link"><a href="index.html">Home</a></div>
          <div class="link"><a href="projects.html">Projects</a></div>
@@ -21,9 +21,9 @@
           <div id="comment-section">
             <form action="/comment" method="POST">
                 <p>Leave a comment:</p>
-                <textarea name="text-input">Leave your comment here.</textarea>
+                <textarea name="text-input"></textarea>
                 </br>
-                <input type="submit" />
+                <input type="submit" onclick="addComment()"/>
             </form>    
           </div>
       </div>

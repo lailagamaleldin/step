@@ -78,7 +78,6 @@ body {
 
 .accent {
   color: #c41eb6;
-  text-decoration: underline;
 }
 
 #icon {
@@ -133,6 +132,6 @@ body {
 }
 
 .project img {
-    width:150px;
-    height:150px;
+  width:150px;
+  height:150px;
 }

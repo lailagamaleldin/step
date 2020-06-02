@@ -69,31 +69,22 @@ function addRandomFunFact() {
 	factContainer.innerText = fact;
 }
 
-function addGreeting() {
-    const responsePromise = fetch('/comments');
+/** Fetching the user's comment. */
+function addComment() {
+    console.log("here");
+    const responsePromise = fetch('/comment');
+    console.log("hellooooo");
     responsePromise.then(handleResponse);
 }
 
+/** Parses the JSON and calls the function to print it. */
 function handleResponse(response) {
     json = response.json();
-    console.log(json);
-    json.then(addQuoteToDom);
+    json.then(addCommentToDom);
 }
 
-// function handleResponse(response) {
-//     // response.text() returns a Promise, because the response is a stream of
-//     // content and not a simple variable.
-//     const textPromise = response.text();
-
-//     // When the response is converted to text, pass the result into the
-//     // addQuoteToDom() function.
-//     textPromise.then(addQuoteToDom);
-// }
-
 /** Adds a random quote to the DOM. */
-function addQuoteToDom(quote) {
-  console.log('Adding quote to dom: ' + quote);
-
+function addCommentToDom(quote) {
   const quoteContainer = document.getElementById('comment-container');
   quoteContainer.innerText = quote;
 }

@@ -35,15 +35,19 @@ public class DataServlet extends HttpServlet {
     response.setContentType("text/html;");
     Gson gson = new Gson();
     String json = gson.toJson(comments);
-    System.out.println(json);
     response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = request.getParameter("text-input");
-    
+    System.out.println(comment);
+    System.out.println(comments.size());
     comments.add(comment);
+
+    Gson gson = new Gson();
+    String json = gson.toJson(comments);
+    response.getWriter().println(json);
 
     // Respond with the result.
     response.setContentType("text/html;");
@@ -51,9 +55,5 @@ public class DataServlet extends HttpServlet {
 
     // Redirect back to the HTML page.
     response.sendRedirect("/comments.html");
-
-    // Respond with the result.
-    response.setContentType("text/html;");
-    response.getWriter().println(comment);
   }
 }
