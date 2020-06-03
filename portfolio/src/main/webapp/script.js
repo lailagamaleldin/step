@@ -68,3 +68,21 @@ function addRandomFunFact() {
 	const factContainer = document.getElementById('fact-container');
 	factContainer.innerText = fact;
 }
+
+/** Fetching the user's comment. */
+function addComment() {
+    const responsePromise = fetch('/comment');
+    responsePromise.then(handleResponse);
+}
+
+/** Parses the JSON and calls the function to print it. */
+function handleResponse(response) {
+    json = response.json();
+    json.then(addCommentToDom);
+}
+
+/** Adds a random quote to the DOM. */
+function addCommentToDom(quote) {
+  const quoteContainer = document.getElementById('comment-container');
+  quoteContainer.innerText = quote;
+}
