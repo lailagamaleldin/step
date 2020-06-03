@@ -14,7 +14,6 @@
 
 package com.google.sps.servlets;
 
-import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -23,18 +22,37 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 
 /** Servlet that handles functionality for commenting. */
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
   // Arraylist storing user comments.
-  List<String> comments = new ArrayList<>();  
+  private List<String> comments = new ArrayList<>();
+
+  private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();  
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws IOException {        
-    response.setContentType("text/html;");
+        throws IOException {
+
+    Query query = new Query("Comment");
+
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) { 
+      String comment = (String) entity.getProperty("comment");
+      comments.add(comment);
+    }
+
+    System.out.println(comments.size());
 
     // Creating and parsing the JSON object.
     Gson gson = new Gson();
@@ -48,7 +66,13 @@ public class DataServlet extends HttpServlet {
 
     // Parsing the user's input into the text box.        
     String comment = request.getParameter("text-input");
-    comments.add(comment);
+    long timestamp = System.currentTimeMillis();
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("comment", comment);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    datastore.put(commentEntity);
 
     // Redirect back to the page where the user entered their comment.
     response.sendRedirect("/comments.html");
