@@ -36,7 +36,6 @@ public final class Comment {
     }
      
     Comment c = (Comment) obj; 
-    
     return (c.comment == this.comment && c.timestamp == this.timestamp); 
   } 
       
