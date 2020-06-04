@@ -17,6 +17,8 @@ package com.google.sps.servlets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,35 +31,44 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.sps.data.Comment;
 
 /** Servlet that handles functionality for commenting. */
 @WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
-  // Arraylist storing user comments.
-  private List<String> comments = new ArrayList<>();
-
-  private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();  
+  private static DatastoreService datastore =
+        DatastoreServiceFactory.getDatastoreService();  
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws IOException {
 
-    Query query = new Query("Comment");
-
+    // Querying all Comment objects in the datastore.
+    Query query = new Query("Comment").addSort("timestamp",SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
-    for (Entity entity : results.asIterable()) { 
-      String comment = (String) entity.getProperty("comment");
-      comments.add(comment);
-    }
+    // Data Structures for storing user comments in both Object and String form.
+    Set<Comment> comments = new HashSet<>();
+    List<String> commentContents = new ArrayList<>();
 
-    System.out.println(comments.size());
+
+    for (Entity entity : results.asIterable()) { 
+      String commentText = (String) entity.getProperty("comment");
+      long timeStamp = (long) entity.getProperty("timestamp");
+      Comment comment = new Comment(commentText, timeStamp);
+
+      // Storing the comment only if it hasn't already been printed to the screen.
+      if (!comments.contains(comment)) {
+        comments.add(comment);
+        commentContents.add(commentText);
+      }
+    
+    }
 
     // Creating and parsing the JSON object.
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
-    response.getWriter().println(json);
+    String json = gson.toJson(commentContents);
   }
 
   @Override

@@ -14,12 +14,34 @@
 
 package com.google.sps.data;
 
-/** An user comment. */
+/** A user comment. */
 public final class Comment {
 
   private final String comment;
+  private final long timestamp;
 
-  public Comment(String comment) {
+  public Comment(String comment, long timestamp) {
     this.comment = comment;
+    this.timestamp = timestamp;
+  }
+
+  @Override
+  public boolean equals(Object obj) { 
+    if(this == obj) {
+      return true; 
+    } 
+ 
+    if(obj == null || obj.getClass()!= this.getClass()) {
+      return false;
+    }
+     
+    Comment c = (Comment) obj; 
+    
+    return (c.comment == this.comment && c.timestamp == this.timestamp); 
+  } 
+      
+  @Override
+  public int hashCode() { 
+    return comment.hashCode(); 
   }
 }

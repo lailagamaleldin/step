@@ -83,6 +83,6 @@ function handleResponse(response) {
 
 /** Adds a random quote to the DOM. */
 function addCommentToDom(quote) {
-  const quoteContainer = document.getElementById('comment-container');
-  quoteContainer.innerText = quote;
+    const quoteContainer = document.getElementById('comment-container');
+    quoteContainer.innerText = quote;
 }
