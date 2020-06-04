@@ -66,9 +66,10 @@ public class DataServlet extends HttpServlet {
     
     }
 
-    // Creating and parsing the JSON object.
+    // Creating and printing the JSON object.
     Gson gson = new Gson();
     String json = gson.toJson(commentContents);
+    response.getWriter().println(json);
   }
 
   @Override
