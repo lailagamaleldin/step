@@ -78,11 +78,16 @@ function addComment() {
 /** Parses the JSON and calls the function to print it. */
 function handleResponse(response) {
     json = response.json();
-    json.then(addCommentToDom);
+    json.then(addCommentsToDom);
 }
 
 /** Adds a random quote to the DOM. */
-function addCommentToDom(quote) {
+function addCommentsToDom(comments) {
     const quoteContainer = document.getElementById('comment-container');
-    quoteContainer.innerText = quote;
+    comments.forEach((comment) => {
+        const commentElement = document.createElement('li');
+        commentElement.className = 'comment';
+        commentElement.innerText = comment;
+        quoteContainer.appendChild(commentElement);
+    });
 }
