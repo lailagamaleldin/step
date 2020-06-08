@@ -185,3 +185,19 @@ input[type=submit] {
   border-radius: 4px;
   color: white;
 }
+
+.upload-button {
+  position: absolute;
+}
+
+#upload-label {
+  color: white;
+  font-size: 13px;
+  height: 23px;
+  width: 89px;
+  border-radius: 4px;
+  background-color: #c41eb6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

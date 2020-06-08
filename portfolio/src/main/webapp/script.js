@@ -89,22 +89,27 @@ function addCommentsToDom(comments) {
 
     while (i < comments.length - 1) {
 
+      // printing the name
       const nameElement = document.createElement('li');
       nameElement.className = 'name';
       nameElement.innerText = comments[i];
       quoteContainer.appendChild(nameElement);
 
+      // printing the comment
       const commentElement = document.createElement('li');
       commentElement.className = 'comment';
       commentElement.innerText = comments[i + 1];
       quoteContainer.appendChild(commentElement);
 
+      // printing the horizontal divider
       const lineElement = document.createElement('hr');
       lineElement.className = 'horizontal-line';
       quoteContainer.appendChild(lineElement);
 
+      // adding spaces after the comment
       const spaceElement = document.createElement('br');
       quoteContainer.appendChild(spaceElement);
+      
       i += 2;
     }
 }
