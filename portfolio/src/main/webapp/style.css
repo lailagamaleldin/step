@@ -4,10 +4,10 @@ body {
 
 #topnav {
   display: grid;
-  grid-template-columns: auto auto auto auto auto;  
+  grid-template-columns: auto auto auto auto auto auto;  
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  width: 800px;
 }
 
 .link, .link a:visited {
@@ -38,7 +38,7 @@ body {
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 750px;
+  width: 800px;
   justify-content: center;
   align-content: center;
 }
@@ -78,7 +78,6 @@ body {
 
 .accent {
   color: #c41eb6;
-  text-decoration: underline;
 }
 
 #icon {
@@ -133,6 +132,56 @@ body {
 }
 
 .project img {
-    width:150px;
-    height:150px;
+  width:150px;
+  height:150px;
+}
+
+#comment-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  justify-content: center;
+  align-content: center;  
+}
+
+#name-input {  
+  height: 16px;  
+  width: 300px;
+  resize: none;  
+}
+
+#text-input {
+  width: 800px;
+}
+
+#forum-description {
+  color: #c41eb6;
+  font-size: 20px;  
+}
+
+.name {
+  font-weight: bold;  
+  margin-left: auto;
+  margin-right: auto;
+  width: 750px;
+  justify-content: center;
+  align-content: center;  
+  list-style-type: none;
+}
+
+.comment {
+  margin-left: auto;
+  margin-right: auto;
+  width: 750px;
+  justify-content: center;
+  align-content: center;  
+  list-style-type: none;
+}
+
+input[type=submit] {
+  width: 12%;
+  background-color: #c41eb6;
+  font-size: 12px;
+  border-radius: 4px;
+  color: white;
 }

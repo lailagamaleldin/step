@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8">
+      <title>Laila Gamaleldin</title>
+      <link rel="stylesheet" href="style.css">
+      <script src="script.js"></script>
+   </head>
+   <body onload="javascript:addComment()">
+      <div id="topnav">
+         <div class="link"><a href="index.html">Home</a></div>
+         <div class="link"><a href="projects.html">Projects</a></div>
+         <div class="link"><a href="resume.html">Resume</a></div>
+         <div class="link"> <a
+            href="https://lailamgamaleldin.wixsite.com/website" target="_blank">UI/UX</a></div>
+         <div class="link"><a 
+            href="https://www.linkedin.com/in/laila-gamaleldin-30b699168" target="_blank">Linkedin</a></div>
+         <div class="link"><a href="comments.html">Discussion Forum</a></div>
+      </div>
+      <div id="content">
+         <br><br>
+         <h1>Discussion Forum:</h1> 
+         <div id="comment-section">
+            <form action="/comment" method="POST">
+               <h4 id="forum-description">Welcome to the discussion forum! This is a space for collaboration and for collective creativity.
+                   Have a cool project you're working on? An idea you're excited about? Share it here! Communicate,
+                   collaborate, but most importantly, remeber to always be respectful :)
+               </h4>
+               Name:
+               <br>
+               <textarea name="name-input" id="name-input" required></textarea>
+               <br>
+               Comment:
+               <br>
+               <textarea name="text-input" id="text-input" required></textarea>
+               </br>
+               <input type="submit" onclick="addComment()"/>
+            </form>
+            <br>
+         </div>
+      </div>
+      <div id="comment-container">
+      </div>
+   </body>
+</html>

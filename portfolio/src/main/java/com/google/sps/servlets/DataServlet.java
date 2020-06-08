@@ -14,19 +14,84 @@
 
 package com.google.sps.servlets;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.sps.data.Comment;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
+/** Servlet that handles functionality for commenting. */
+@WebServlet("/comment")
 public class DataServlet extends HttpServlet {
 
+  private static DatastoreService datastore =
+        DatastoreServiceFactory.getDatastoreService();  
+
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello world!</h1>");
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws IOException {
+
+    // Querying all Comment objects in the datastore.
+    Query query = new Query("Comment").addSort("timestamp",SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    // Data Structures for storing user comments in both Object and String form.
+    Set<Comment> comments = new HashSet<>();
+    List<String> commentContents = new ArrayList<>();
+
+
+    for (Entity entity : results.asIterable()) {
+      String name = (String) entity.getProperty("name");  
+      String commentText = (String) entity.getProperty("comment");
+      long timeStamp = (long) entity.getProperty("timestamp");
+      Comment comment = new Comment(name, commentText, timeStamp);
+
+      // Storing the comment only if it hasn't already been printed to the screen.
+      if (!comments.contains(comment)) { 
+        comments.add(comment);
+        commentContents.add(name);
+        commentContents.add(commentText);
+      }
+    
+    }
+
+    // Creating and printing the JSON object.
+    Gson gson = new Gson();
+
+    String json = gson.toJson(commentContents);
+    response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws IOException {
+
+    // Parsing the user's input into the text box.
+    String name = request.getParameter("name-input");        
+    String comment = request.getParameter("text-input");
+    long timestamp = System.currentTimeMillis();
+
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("comment", comment);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    datastore.put(commentEntity);
+
+    // Redirect back to the page where the user entered their comment.
+    response.sendRedirect("/comments.html");
   }
 }

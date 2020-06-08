@@ -68,3 +68,57 @@ function addRandomFunFact() {
 	const factContainer = document.getElementById('fact-container');
 	factContainer.innerText = fact;
 }
+
+/** Fetching the user's comment. */
+function addComment() {
+    const responsePromise = fetch('/comment');
+    responsePromise.then(handleResponse);
+}
+
+/** Parses the JSON and calls the function to print it. */
+function handleResponse(response) {
+    json = response.json();
+    json.then(addCommentsToDom);
+}
+
+/** Adds a random quote to the DOM. */
+function addCommentsToDom(comments) {
+    const quoteContainer = document.getElementById('comment-container');
+
+    i = 0;
+
+    while (i < comments.length - 1) {
+
+      const nameElement = document.createElement('li');
+      nameElement.className = 'name';
+      nameElement.innerText = comments[i];
+      quoteContainer.appendChild(nameElement);
+
+      const commentElement = document.createElement('li');
+      commentElement.className = 'comment';
+      commentElement.innerText = comments[i + 1];
+      quoteContainer.appendChild(commentElement);
+
+      const lineElement = document.createElement('hr');
+      lineElement.className = 'horizontal-line';
+      quoteContainer.appendChild(lineElement);
+
+      const spaceElement = document.createElement('br');
+      quoteContainer.appendChild(spaceElement);
+      i += 2;
+    }
+
+    // comments.forEach((comment) => {
+    //     const commentElement = document.createElement('li');
+    //     commentElement.className = 'comment';
+    //     commentElement.innerText = comment;
+    //     quoteContainer.appendChild(commentElement);
+
+    //     const lineElement = document.createElement('hr');
+    //     lineElement.className = 'horizontal-line';
+    //     quoteContainer.appendChild(lineElement);
+
+    //     const spaceElement = document.createElement('br');
+    //     quoteContainer.appendChild(spaceElement);
+    // });
+}
