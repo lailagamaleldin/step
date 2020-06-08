@@ -107,18 +107,4 @@ function addCommentsToDom(comments) {
       quoteContainer.appendChild(spaceElement);
       i += 2;
     }
-
-    // comments.forEach((comment) => {
-    //     const commentElement = document.createElement('li');
-    //     commentElement.className = 'comment';
-    //     commentElement.innerText = comment;
-    //     quoteContainer.appendChild(commentElement);
-
-    //     const lineElement = document.createElement('hr');
-    //     lineElement.className = 'horizontal-line';
-    //     quoteContainer.appendChild(lineElement);
-
-    //     const spaceElement = document.createElement('br');
-    //     quoteContainer.appendChild(spaceElement);
-    // });
 }
