@@ -17,10 +17,12 @@ package com.google.sps.data;
 /** A user comment. */
 public final class Comment {
 
+  private final String name;
   private final String comment;
   private final long timestamp;
 
-  public Comment(String comment, long timestamp) {
+  public Comment(String name, String comment, long timestamp) {
+    this.name = name;  
     this.comment = comment;
     this.timestamp = timestamp;
   }
@@ -36,7 +38,8 @@ public final class Comment {
     }
      
     Comment c = (Comment) obj; 
-    return (c.comment == this.comment && c.timestamp == this.timestamp); 
+    return (c.name == this.name && c.comment == this.comment &&
+        c.timestamp == this.timestamp); 
   } 
       
   @Override

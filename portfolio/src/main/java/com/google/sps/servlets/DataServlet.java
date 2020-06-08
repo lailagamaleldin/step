@@ -53,14 +53,16 @@ public class DataServlet extends HttpServlet {
     List<String> commentContents = new ArrayList<>();
 
 
-    for (Entity entity : results.asIterable()) { 
+    for (Entity entity : results.asIterable()) {
+      String name = (String) entity.getProperty("name");  
       String commentText = (String) entity.getProperty("comment");
       long timeStamp = (long) entity.getProperty("timestamp");
-      Comment comment = new Comment(commentText, timeStamp);
+      Comment comment = new Comment(name, commentText, timeStamp);
 
       // Storing the comment only if it hasn't already been printed to the screen.
-      if (!comments.contains(comment)) {
+      if (!comments.contains(comment)) { 
         comments.add(comment);
+        commentContents.add(name);
         commentContents.add(commentText);
       }
     
@@ -77,11 +79,13 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws IOException {
 
-    // Parsing the user's input into the text box.        
+    // Parsing the user's input into the text box.
+    String name = request.getParameter("name-input");        
     String comment = request.getParameter("text-input");
     long timestamp = System.currentTimeMillis();
 
     Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
     commentEntity.setProperty("comment", comment);
     commentEntity.setProperty("timestamp", timestamp);
 

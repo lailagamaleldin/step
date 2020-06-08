@@ -18,13 +18,25 @@
          <div class="link"><a href="comments.html">Discussion Forum</a></div>
       </div>
       <div id="content">
+         <br><br>
+         <h1>Discussion Forum:</h1> 
          <div id="comment-section">
             <form action="/comment" method="POST">
-               <p>Leave a comment:</p>
-               <textarea name="text-input"></textarea>
+               <h4 id="forum-description">Welcome to the discussion forum! This is a space for collaboration and for collective creativity.
+                   Have a cool project you're working on? An idea you're excited about? Share it here! Communicate,
+                   collaborate, but most importantly, remeber to always be respectful :)
+               </h4>
+               Name:
+               <br>
+               <textarea name="name-input" id="name-input" required></textarea>
+               <br>
+               Comment:
+               <br>
+               <textarea name="text-input" id="text-input" required></textarea>
                </br>
                <input type="submit" onclick="addComment()"/>
             </form>
+            <br>
          </div>
       </div>
       <div id="comment-container">
