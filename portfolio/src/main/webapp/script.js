@@ -22,34 +22,34 @@ function readFile(filePath, split, delimiter = ' ') {
 
     // Retreiving file contents.
 	fetch(filePath)
-		.then(
-			function (response) {
-                // Checking for error status.
-				if (response.status != 200) {
-				  console.log('Error with status code: ' + response.status);
-				  return;
-				}
+	  .then(
+	    function (response) {
+        
+          // Checking for error status.
+      	  if (response.status != 200) {
+			console.log('Error with status code: ' + response.status);
+	  	    return;
+		  }
 
-                // Splitting on the parameter.
-				response.text().then(function (text) {
-                    var splitText;
+          // Splitting on the parameter.
+		  response.text().then(function (text) {
+          var splitText;
 
-                    if (split) {
-                      splitText = text.split(delimiter);
-                    } else {
-                      splitText = text.split();
-                    }
+          if (split) {
+            splitText = text.split(delimiter);
+          } else {
+            splitText = text.split();
+          }
 
-					splitText.forEach(elem => contents.push(elem));
-				});
+		  splitText.forEach(elem => contents.push(elem));
+		  });
 
-			}
-		).catch(function (err) {
-		  console.log('Error: ', err);
-		});
+		}
+	  ).catch(function (err) {
+	    console.log('Error: ', err);
+	  });
 
-
-	return contents;
+    return contents;
 }
 
 // Compiling the facts into an array.
@@ -78,7 +78,16 @@ function addComment() {
 /** Parses the JSON and calls the function to print it. */
 function handleResponse(response) {
     json = response.json();
+    console.log(json);
     json.then(addCommentsToDom);
+}
+
+/** Handling uploaded images. */
+function handleImageUpload(imageUploadUrl) {
+    console.log("url");
+    console.log(imageUploadUrl);
+    const messageForm = document.getElementById('my-form');
+    messageForm.action = imageUploadUrl;
 }
 
 /** Adds a random quote to the DOM. */
@@ -112,4 +121,18 @@ function addCommentsToDom(comments) {
       
       i += 2;
     }
+}
+
+function fetchBlobstoreUrlAndShowForm() {
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        console.log(response);    
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        console.log(imageUploadUrl);  
+        const messageForm = document.getElementById('my-form');
+        messageForm.action = imageUploadUrl;
+        messageForm.classList.remove('hidden');
+      });
 }

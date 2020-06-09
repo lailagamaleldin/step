@@ -179,7 +179,8 @@ body {
 }
 
 input[type=submit] {
-  width: 12%;
+  height: 26px;
+  width: 89px;
   background-color: #c41eb6;
   font-size: 12px;
   border-radius: 4px;

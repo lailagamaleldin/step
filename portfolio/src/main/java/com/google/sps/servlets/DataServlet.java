@@ -19,7 +19,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +34,14 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.blobstore.BlobInfo;
+import com.google.appengine.api.blobstore.BlobInfoFactory;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.sps.data.Comment;
 
 /** Servlet that handles functionality for commenting. */
@@ -38,7 +49,9 @@ import com.google.sps.data.Comment;
 public class DataServlet extends HttpServlet {
 
   private static DatastoreService datastore =
-        DatastoreServiceFactory.getDatastoreService();  
+        DatastoreServiceFactory.getDatastoreService();
+ // private static BlobstoreService blobstore =
+   //     BlobstoreServiceFactory.getBlobstoreService();  
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -51,7 +64,6 @@ public class DataServlet extends HttpServlet {
     // Data Structures for storing user comments in both Object and String form.
     Set<Comment> comments = new HashSet<>();
     List<String> commentContents = new ArrayList<>();
-
 
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");  
@@ -94,4 +106,5 @@ public class DataServlet extends HttpServlet {
     // Redirect back to the page where the user entered their comment.
     response.sendRedirect("/comments.html");
   }
+
 }
