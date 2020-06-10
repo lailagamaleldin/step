@@ -125,37 +125,31 @@ function addCommentsToDom(comments) {
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
       .then((response) => {
-        console.log(response);
-        json = response.json();
-        json.then(addImagesToDom);
-           
-        //return response.text();
+        return response.text();
       })
-    //   .then((imageUploadUrl) => {
+       .then((imageUploadUrl) => {
+         console.log('here');  
+         console.log(imageUploadUrl);  
+         const messageForm = document.getElementById('my-form');
+         messageForm.action = imageUploadUrl;
+         messageForm.classList.remove('hidden');
+         const container = document.getElementById('container');
 
-          
-    //      console.log('here');  
-    //      console.log(imageUploadUrl);  
-    //      const messageForm = document.getElementById('my-form');
-    //      messageForm.action = imageUploadUrl;
-    //      messageForm.classList.remove('hidden');
-    //      const container = document.getElementById('container');
-
-        // const commentElement = document.createElement('li');
-        // commentElement.className = 'comment';
-        // commentElement.innerText = imageUploadUrl;
-        // container.appendChild(commentElement);
-   //   });
+        const commentElement = document.createElement('li');
+        commentElement.className = 'comment';
+        commentElement.innerText = imageUploadUrl;
+        container.appendChild(commentElement);
+     });
 }
 
-function addImagesToDom(images) {
-    console.log("images");
-    console.log(images);
-    const messageForm = document.getElementById('my-form');
-    messageForm.action = images[0];
-    messageForm.classList.remove('hidden');
+// function addImagesToDom(images) {
+//     console.log("images");
+//     console.log(images);
+//     const messageForm = document.getElementById('my-form');
+//     messageForm.action = images[0];
+//     messageForm.classList.remove('hidden');
 
-    for(var i = 0; i < images.length; i++) {
-        console.log(images[i]);
-    }
-}
+//     for(var i = 0; i < images.length; i++) {
+//         console.log(images[i]);
+//     }
+// }

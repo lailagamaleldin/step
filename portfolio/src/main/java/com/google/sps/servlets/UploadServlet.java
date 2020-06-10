@@ -46,7 +46,6 @@ public class UploadServlet extends HttpServlet {
 
   List<String> imgUrls = new ArrayList<>();
 
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     System.out.println("inside get");  
@@ -54,19 +53,13 @@ public class UploadServlet extends HttpServlet {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/blobstore-upload-url");
 
-    List pageContents = new ArrayList(Arrays.asList(uploadUrl));
-    System.out.println(imgUrls.size());
+    response.setContentType("text/html");
+    response.getWriter().println(uploadUrl);
 
     for (String url: imgUrls) {
-      if (!pageContents.contains(url)) {
-        pageContents.add(url);  
-      }
+      response.getWriter().println(url);
     }
 
-    Gson gson = new Gson();
-
-    String json = gson.toJson(pageContents);
-    response.getWriter().println(json);
   }
 
   @Override
