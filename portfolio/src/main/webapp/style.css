@@ -49,12 +49,10 @@ body {
 #home-wrapper {  
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 20%;
+  column-gap: 10%;
   background-color: #fffde6;
-  top:50%;
-  transform: translate(-20%, -50%);
-  margin-top: 55%;
-  margin-bottom: 0%;
+  top: 50%;
+  transform: translate(-10%, 10%);
 }
 
 #home-header, h1 {
@@ -214,8 +212,10 @@ input[type=submit] {
   width: 500px;
 }
 
-#home-bottom {
-  display: block;  
-  color: #4B0082;   
+#home-bottom {  
+  color: #4B0082;
+  margin-top: 13%;
+  margin-bottom: 3%;
+  margin-left: 18%;
 }
 
