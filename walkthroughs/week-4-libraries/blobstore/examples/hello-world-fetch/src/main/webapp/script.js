@@ -14,13 +14,10 @@
 
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
-      .then((response) => {
-        console.log(response);    
+      .then((response) => {  
         return response.text();
       })
       .then((imageUploadUrl) => {
-        console.log('imageUploadUrl');
-        console.log(imageUploadUrl);  
         const messageForm = document.getElementById('my-form');
         messageForm.action = imageUploadUrl;
         messageForm.classList.remove('hidden');

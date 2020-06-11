@@ -49,9 +49,7 @@ import com.google.sps.data.Comment;
 public class DataServlet extends HttpServlet {
 
   private static DatastoreService datastore =
-        DatastoreServiceFactory.getDatastoreService();
- // private static BlobstoreService blobstore =
-   //     BlobstoreServiceFactory.getBlobstoreService();  
+        DatastoreServiceFactory.getDatastoreService(); 
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
