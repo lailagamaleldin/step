@@ -36,20 +36,25 @@ body {
 }
 
 #content {
+  display: block;  
   margin-left: auto;
   margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
   width: 800px;
   justify-content: center;
   align-content: center;
 }
 
-#home-wrapper {
+#home-wrapper {  
   display: grid;
   grid-template-columns: 1fr 1fr;
+  column-gap: 20%;
   background-color: #fffde6;
-  position:absolute;
   top:50%;
   transform: translate(-20%, -50%);
+  margin-top: 55%;
+  margin-bottom: 0%;
 }
 
 #home-header, h1 {
@@ -202,3 +207,15 @@ input[type=submit] {
   justify-content: center;
   align-items: center;
 }
+
+#map { 
+  border: thin solid black;
+  height: 500px;
+  width: 500px;
+}
+
+#home-bottom {
+  display: block;  
+  color: #4B0082;   
+}
+

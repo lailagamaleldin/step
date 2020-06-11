@@ -7,7 +7,7 @@
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIyhCJCyrQwSdVZbi49f8hIyLr0RUJiFo"></script>
       <script src="script.js"></script>
    </head>
-   <body>
+   <body onload="createMap();">
       <div id="topnav">
          <div class="link"><a href="index.html">Home</a></div>
          <div class="link"><a href="projects.html">Projects</a></div>
@@ -18,11 +18,14 @@
          <div class="link"><a href="comments.html">Discussion Forum</a></div>
          <div class="link"><a href="gallery.html">Gallery</a></div>
       </div>
+
       <div id="content">
+
          <div id="home-wrapper">
             <div id="home-left">    
                <img id="icon" src="images/me.jpg"/>
             </div>
+
             <div id="home-right">
                <h1 id="home-header">Hi, I'm Laila!</h1>
                <p class="about-me">
@@ -69,9 +72,12 @@
                <button onclick="addRandomFunFact()" id="random-button">
                Give me a fun fact!</button>
                <div id="fact-container"></div>
-               <p>Here are some of my favorite spots around Providence, RI, the city I currently live in.</p>
             </div>
          </div>
+         <div id="home-bottom">
+        <p>Here are some of my favorite spots around Providence, RI.</p>
+        <div id="map"></div>
+         </div>    
       </div>
    </body>
 </html>

@@ -133,3 +133,35 @@ function fetchBlobstoreUrlAndShowForm() {
         container.appendChild(commentElement);
      });
 }
+
+/** Function for displaying a map. */
+function createMap() {
+  const map = new google.maps.Map(
+    document.getElementById('map'),
+    {center: {lat: 41.822055, lng: -71.396270}, zoom: 15});
+
+  addLandmark(
+      map, 41.822861, -71.392315, 'Like No Udder',
+      'Vegan ice cream joint with amazing flavors and rainbow decorations.')
+  addLandmark(
+      map, 41.817512, -71.390816, 'India Point Park',
+      'A lovely park to picnic in.') 
+  addLandmark(
+      map, 41.819559, -71.399020, 'Amy\'s Place',
+      'My favorite breakfast place. The yummiest sandwiches you\'ll ever have')
+    addLandmark(
+      map, 41.825753, -71.406373, 'The Providence Athaneum',
+      'Super aesthetic library. Can be difficult to focus because of how pretty it is...')
+      
+}
+
+/** Adds a marker that shows an info window when clicked. */
+function addLandmark(map, lat, lng, title, description) {
+  const marker = new google.maps.Marker(
+      {position: {lat: lat, lng: lng}, map: map, title: title});
+
+  const infoWindow = new google.maps.InfoWindow({content: description});
+  marker.addListener('click', () => {
+    infoWindow.open(map, marker);
+  });
+}
