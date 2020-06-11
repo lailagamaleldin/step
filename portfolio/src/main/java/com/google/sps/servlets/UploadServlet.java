@@ -47,13 +47,14 @@ public class UploadServlet extends HttpServlet {
   List<String> imgUrls = new ArrayList<>();
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("inside get");  
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
 
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/blobstore-upload-url");
 
     response.setContentType("text/html");
+
+    // Sending upload url to Javascript to serve as action link
     response.getWriter().println(uploadUrl);
 
     for (String url: imgUrls) {
@@ -64,18 +65,15 @@ public class UploadServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("inside post");
+
     // Get the message entered by the user.
     String message = request.getParameter("message");
 
     // Get the URL of the image that the user uploaded to Blobstore.
     String imageUrl = getUploadedFileUrl(request, "image");
 
-    System.out.println("url");
-    System.out.println(imageUrl);
-
     imgUrls.add(imageUrl);
-
+    // Redirecting to the upload page.
     response.sendRedirect("/gallery.html");
   }
 
@@ -99,9 +97,6 @@ public class UploadServlet extends HttpServlet {
       blobstoreService.delete(blobKey);
       return null;
     }
-
-    // We could check the validity of the file here, e.g. to make sure it's an image file
-    // https://stackoverflow.com/q/10779564/873165
 
     // Use ImagesService to get a URL that points to the uploaded file.
     ImagesService imagesService = ImagesServiceFactory.getImagesService();

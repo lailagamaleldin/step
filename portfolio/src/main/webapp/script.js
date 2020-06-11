@@ -81,14 +81,6 @@ function handleResponse(response) {
     json.then(addCommentsToDom);
 }
 
-/** Handling uploaded images. */
-function handleImageUpload(imageUploadUrl) {
-    console.log("url");
-    console.log(imageUploadUrl);
-    const messageForm = document.getElementById('my-form');
-    messageForm.action = imageUploadUrl;
-}
-
 /** Adds a random quote to the DOM. */
 function addCommentsToDom(comments) {
     const quoteContainer = document.getElementById('comment-container');
@@ -122,18 +114,18 @@ function addCommentsToDom(comments) {
     }
 }
 
+/** Recieved the url to post to as well as the images to print and handles
+    adding them to the HTML */
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
       .then((response) => {
         return response.text();
       })
-       .then((imageUploadUrl) => {
-         console.log('here');  
-         console.log(imageUploadUrl);  
-         const messageForm = document.getElementById('my-form');
-         messageForm.action = imageUploadUrl;
-         messageForm.classList.remove('hidden');
-         const container = document.getElementById('container');
+       .then((imageUploadUrl) => { 
+        const messageForm = document.getElementById('my-form');
+        messageForm.action = imageUploadUrl;
+        messageForm.classList.remove('hidden');
+        const container = document.getElementById('container');
 
         const commentElement = document.createElement('li');
         commentElement.className = 'comment';
@@ -141,15 +133,3 @@ function fetchBlobstoreUrlAndShowForm() {
         container.appendChild(commentElement);
      });
 }
-
-// function addImagesToDom(images) {
-//     console.log("images");
-//     console.log(images);
-//     const messageForm = document.getElementById('my-form');
-//     messageForm.action = images[0];
-//     messageForm.classList.remove('hidden');
-
-//     for(var i = 0; i < images.length; i++) {
-//         console.log(images[i]);
-//     }
-// }
