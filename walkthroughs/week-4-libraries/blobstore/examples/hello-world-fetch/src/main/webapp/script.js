@@ -14,7 +14,7 @@
 
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
-      .then((response) => {
+      .then((response) => {  
         return response.text();
       })
       .then((imageUploadUrl) => {

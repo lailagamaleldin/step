@@ -22,34 +22,34 @@ function readFile(filePath, split, delimiter = ' ') {
 
     // Retreiving file contents.
 	fetch(filePath)
-		.then(
-			function (response) {
-                // Checking for error status.
-				if (response.status != 200) {
-				  console.log('Error with status code: ' + response.status);
-				  return;
-				}
+	  .then(
+	    function (response) {
+        
+          // Checking for error status.
+      	  if (response.status != 200) {
+			console.log('Error with status code: ' + response.status);
+	  	    return;
+		  }
 
-                // Splitting on the parameter.
-				response.text().then(function (text) {
-                    var splitText;
+          // Splitting on the parameter.
+		  response.text().then(function (text) {
+          var splitText;
 
-                    if (split) {
-                      splitText = text.split(delimiter);
-                    } else {
-                      splitText = text.split();
-                    }
+          if (split) {
+            splitText = text.split(delimiter);
+          } else {
+            splitText = text.split();
+          }
 
-					splitText.forEach(elem => contents.push(elem));
-				});
+		  splitText.forEach(elem => contents.push(elem));
+		  });
 
-			}
-		).catch(function (err) {
-		  console.log('Error: ', err);
-		});
+		}
+	  ).catch(function (err) {
+	    console.log('Error: ', err);
+	  });
 
-
-	return contents;
+    return contents;
 }
 
 // Compiling the facts into an array.
@@ -89,36 +89,47 @@ function addCommentsToDom(comments) {
 
     while (i < comments.length - 1) {
 
+      // printing the name
       const nameElement = document.createElement('li');
       nameElement.className = 'name';
       nameElement.innerText = comments[i];
       quoteContainer.appendChild(nameElement);
 
+      // printing the comment
       const commentElement = document.createElement('li');
       commentElement.className = 'comment';
       commentElement.innerText = comments[i + 1];
       quoteContainer.appendChild(commentElement);
 
+      // printing the horizontal divider
       const lineElement = document.createElement('hr');
       lineElement.className = 'horizontal-line';
       quoteContainer.appendChild(lineElement);
 
+      // adding spaces after the comment
       const spaceElement = document.createElement('br');
       quoteContainer.appendChild(spaceElement);
+      
       i += 2;
     }
+}
 
-    // comments.forEach((comment) => {
-    //     const commentElement = document.createElement('li');
-    //     commentElement.className = 'comment';
-    //     commentElement.innerText = comment;
-    //     quoteContainer.appendChild(commentElement);
+/** Recieved the url to post to as well as the images to print and handles
+    adding them to the HTML */
+function fetchBlobstoreUrlAndShowForm() {
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+       .then((imageUploadUrl) => { 
+        const messageForm = document.getElementById('my-form');
+        messageForm.action = imageUploadUrl;
+        messageForm.classList.remove('hidden');
+        const container = document.getElementById('container');
 
-    //     const lineElement = document.createElement('hr');
-    //     lineElement.className = 'horizontal-line';
-    //     quoteContainer.appendChild(lineElement);
-
-    //     const spaceElement = document.createElement('br');
-    //     quoteContainer.appendChild(spaceElement);
-    // });
+        const commentElement = document.createElement('li');
+        commentElement.className = 'comment';
+        commentElement.innerText = imageUploadUrl;
+        container.appendChild(commentElement);
+     });
 }

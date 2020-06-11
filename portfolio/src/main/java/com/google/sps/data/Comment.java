@@ -38,7 +38,7 @@ public final class Comment {
     }
      
     Comment c = (Comment) obj; 
-    return (c.name == this.name && c.comment == this.comment &&
+    return (c.name.equals(this.name) && c.comment.equals(this.comment) &&
         c.timestamp == this.timestamp); 
   } 
       

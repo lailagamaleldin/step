@@ -4,7 +4,7 @@ body {
 
 #topnav {
   display: grid;
-  grid-template-columns: auto auto auto auto auto auto;  
+  grid-template-columns: auto auto auto auto auto auto auto;  
   margin-left: auto;
   margin-right: auto;
   width: 800px;
@@ -179,9 +179,26 @@ body {
 }
 
 input[type=submit] {
-  width: 12%;
+  height: 26px;
+  width: 89px;
   background-color: #c41eb6;
   font-size: 12px;
   border-radius: 4px;
   color: white;
+}
+
+.upload-button {
+  position: absolute;
+}
+
+#upload-label {
+  color: white;
+  font-size: 13px;
+  height: 23px;
+  width: 89px;
+  border-radius: 4px;
+  background-color: #c41eb6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
