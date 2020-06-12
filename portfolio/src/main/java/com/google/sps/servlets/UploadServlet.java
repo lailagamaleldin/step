@@ -35,6 +35,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.sps.data.Comment;
 
 /**
  * When the fetch() function requests the /blobstore-upload-url URL, the content of the response is
@@ -46,6 +47,7 @@ public class UploadServlet extends HttpServlet {
 
   // List of the URLs of images
   List<String> imgUrls = new ArrayList<>();
+  List<Comment> comments = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -73,8 +75,27 @@ public class UploadServlet extends HttpServlet {
 
     // Get the URL of the image that the user uploaded to Blobstore and add 
     // it to the list of URLs.
+    String name = request.getParameter("name-input");
+    String commentText = request.getParameter("text-input");
     String imageUrl = getUploadedFileUrl(request, "image");
+    long timestamp = System.currentTimeMillis();
+
+    Comment comment = new Comment();
+    
+    if (name != null) {
+      comment.setName(name);
+    }
+
+    if (commentText != null) {
+      comment.setComment(commentText);
+    }
+
+    if (imageUrl != null) {
+       comment.setImgUrl(imageUrl); 
+    }
+
     imgUrls.add(imageUrl);
+    comments.add(comment);
 
     response.sendRedirect("/gallery.html");
   }

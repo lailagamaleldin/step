@@ -157,7 +157,7 @@ function createMap() {
   addLandmark(
       map, 41.819559, -71.399020, 'Amy\'s Place',
       'My favorite breakfast place. The yummiest sandwiches you\'ll ever have')
-    addLandmark(
+  addLandmark(
       map, 41.825753, -71.406373, 'The Providence Athaneum',
       'Super aesthetic library. Can be difficult to focus because of how pretty it is...')
       
