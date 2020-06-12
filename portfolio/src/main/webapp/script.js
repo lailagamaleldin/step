@@ -118,32 +118,24 @@ function addCommentsToDom(comments) {
     adding them to the HTML */
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
-      .then((response) => {
-        console.log('response');  
-        console.log(response);
-        const text = response.json();
-        console.log('text');
-        console.log(text);    
-        return text;
+      .then((response) => {   
+        return response.json();
       })
-      .then((imageUploadUrl) => {
-        console.log('imageUploadUrl');
-        console.log(imageUploadUrl);
-        console.log(imageUploadUrl[0]);
-        console.log(imageUploadUrl.length);  
+      .then((json) => { 
         const messageForm = document.getElementById('my-form');
-        messageForm.action = imageUploadUrl[0];
-
-        var i;
+        // Setting the form's action to the Blobstore upload URL
+        messageForm.action = json[0];
 
         const container = document.getElementById('container');
 
-        if (imageUploadUrl.length > 1) {
-            for (i = 1; i < imageUploadUrl.length; i++) {
-              const imgElement = document.createElement('img');
-              imgElement.src = imageUploadUrl[i];
-              container.appendChild(imgElement);
-            }
+        // Checking for user comments or uploaded images.
+        if (json.length > 1) {
+          var i;  
+          for (i = 1; i < json.length; i++) {
+            const imgElement = document.createElement('img');
+            imgElement.src = json[i];
+            container.appendChild(imgElement);
+          }
         }
 
         messageForm.classList.remove('hidden');

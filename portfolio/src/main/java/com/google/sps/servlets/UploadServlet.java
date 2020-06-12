@@ -44,24 +44,26 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/blobstore-upload-url")
 public class UploadServlet extends HttpServlet {
 
+  // List of the URLs of images
   List<String> imgUrls = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    // Setting up blobstore
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/blobstore-upload-url");
 
     Gson gson = new Gson();
     List<String> jsonContents = new ArrayList<>();
+    
+    // Populating the JSON
     jsonContents.add(uploadUrl);
-
     for (String url: imgUrls) {
       jsonContents.add(url);
     }
 
     String json = gson.toJson(jsonContents);
-
     response.setContentType("text/html");
     response.getWriter().println(json);
   }
