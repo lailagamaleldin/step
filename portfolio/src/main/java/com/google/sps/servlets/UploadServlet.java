@@ -58,6 +58,8 @@ public class UploadServlet extends HttpServlet {
     response.getWriter().println(uploadUrl);
 
     for (String url: imgUrls) {
+      response.setContentType("text/html");
+      response.getWriter().println(url);    
       response.getWriter().println(url);
     }
 
@@ -73,6 +75,13 @@ public class UploadServlet extends HttpServlet {
     String imageUrl = getUploadedFileUrl(request, "image");
 
     imgUrls.add(imageUrl);
+
+    PrintWriter out = response.getWriter();
+    response.getWriter().println("<p>Here's the image you uploaded:</p>");
+    System.out.println("image url");
+
+
+
     // Redirecting to the upload page.
     response.sendRedirect("/gallery.html");
   }

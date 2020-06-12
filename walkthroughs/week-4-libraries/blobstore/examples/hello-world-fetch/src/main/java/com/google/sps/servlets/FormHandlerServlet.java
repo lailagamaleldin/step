@@ -54,6 +54,8 @@ public class FormHandlerServlet extends HttpServlet {
     // A real codebase would probably store these in Datastore.
     PrintWriter out = response.getWriter();
     out.println("<p>Here's the image you uploaded:</p>");
+    System.out.println("image url");
+    System.out.println(imageUrl);
     out.println("<a href=\"" + imageUrl + "\">");
     out.println("<img src=\"" + imageUrl + "\" />");
     out.println("</a>");
