@@ -55,10 +55,14 @@ public class UploadServlet extends HttpServlet {
     Gson gson = new Gson();
     List<String> str = new ArrayList<>();
     str.add(uploadUrl);
+
+    for (String url: imgUrls) {
+      str.add(url);
+    }
+
     String json = gson.toJson(str);
 
     response.setContentType("text/html");
-    //response.getWriter().println(uploadUrl);
     response.getWriter().println(json);
   }
 
@@ -67,6 +71,7 @@ public class UploadServlet extends HttpServlet {
     System.out.println("inside post");  
     // Get the URL of the image that the user uploaded to Blobstore.
     String imageUrl = getUploadedFileUrl(request, "image");
+    imgUrls.add(imageUrl);
 
     response.sendRedirect("/gallery.html");
 

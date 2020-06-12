@@ -134,9 +134,23 @@ function fetchBlobstoreUrlAndShowForm() {
       .then((imageUploadUrl) => {
         console.log('imageUploadUrl');
         console.log(imageUploadUrl);
-        console.log(imageUploadUrl[0]);  
+        console.log(imageUploadUrl[0]);
+        console.log(imageUploadUrl.length);  
         const messageForm = document.getElementById('my-form');
         messageForm.action = imageUploadUrl[0];
+
+        var i;
+
+        const container = document.getElementById('container');
+
+        if (imageUploadUrl.length > 1) {
+            for (i = 1; i < imageUploadUrl.length; i++) {
+              const imgElement = document.createElement('img');
+              imgElement.src = imageUploadUrl[i];
+              container.appendChild(imgElement);
+            }
+        }
+
         messageForm.classList.remove('hidden');
       });
 }
