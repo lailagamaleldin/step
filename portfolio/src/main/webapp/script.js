@@ -114,33 +114,31 @@ function addCommentsToDom(comments) {
     }
 }
 
+function blobstoreAndPrint() {
+    fetchBlobstoreUrlAndShowForm();
+    printingFunction();
+}
+
 /** Recieved the url to post to as well as the images to print and handles
     adding them to the HTML */
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
       .then((response) => {
-        console.log('response');
-        console.log(response);  
-        return response.text();
+        console.log('response');  
+        console.log(response);
+        const text = response.json();
+        console.log('text');
+        console.log(text);    
+        return text;
       })
-       .then((imageUploadUrl) => {
-        console.log('imageUploadUrl');   
-        console.log(imageUploadUrl);    
+      .then((imageUploadUrl) => {
+        console.log('imageUploadUrl');
+        console.log(imageUploadUrl);
+        console.log(imageUploadUrl[0]);  
         const messageForm = document.getElementById('my-form');
-        messageForm.action = imageUploadUrl;
+        messageForm.action = imageUploadUrl[0];
         messageForm.classList.remove('hidden');
-        const container = document.getElementById('container');
-
-        const commentElement = document.createElement('li');
-        commentElement.className = 'comment';
-        commentElement.innerText = imageUploadUrl;
-
-        const imgElement = document.createElement('img');
-        imgElement.setAttribute('src', imageUploadUrl);
-
-        container.appendChild(commentElement);
-        container.appendChild(imgElement);
-     });
+      });
 }
 
 /** Function for displaying a map. */
@@ -173,4 +171,20 @@ function addLandmark(map, lat, lng, title, description) {
   marker.addListener('click', () => {
     infoWindow.open(map, marker);
   });
+}
+
+/** Fetching the user's comment. */
+function addImage() {
+    const responsePromise = fetch('/comment');
+    responsePromise.then(handleResponse);
+}
+
+/** Parses the JSON and calls the function to print it. */
+function handleResponse(response) {
+    json = response.json();
+    json.then(addCommentsToDom);
+}
+
+function printingFunction() {
+  
 }

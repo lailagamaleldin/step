@@ -47,43 +47,38 @@ public class UploadServlet extends HttpServlet {
   List<String> imgUrls = new ArrayList<>();
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
-
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    System.out.println("inside get");
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/blobstore-upload-url");
 
+    Gson gson = new Gson();
+    List<String> str = new ArrayList<>();
+    str.add(uploadUrl);
+    String json = gson.toJson(str);
+
     response.setContentType("text/html");
-
-    // Sending upload url to Javascript to serve as action link
-    response.getWriter().println(uploadUrl);
-
-    for (String url: imgUrls) {
-      response.setContentType("text/html");
-      response.getWriter().println(url);    
-      response.getWriter().println(url);
-    }
-
+    //response.getWriter().println(uploadUrl);
+    response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    // Get the message entered by the user.
-    String message = request.getParameter("message");
-
+    System.out.println("inside post");  
     // Get the URL of the image that the user uploaded to Blobstore.
     String imageUrl = getUploadedFileUrl(request, "image");
 
-    imgUrls.add(imageUrl);
-
-    PrintWriter out = response.getWriter();
-    response.getWriter().println("<p>Here's the image you uploaded:</p>");
-    System.out.println("image url");
-
-
-
-    // Redirecting to the upload page.
     response.sendRedirect("/gallery.html");
+
+    // Output some HTML that shows the data the user entered.
+    // A real codebase would probably store these in Datastore.
+    PrintWriter out = response.getWriter();
+    out.println("<p>Here's the image you uploadeddddd:</p>");
+    System.out.println("image url");
+    System.out.println(imageUrl);
+    out.println("<a href=\"" + imageUrl + "\">");
+    out.println("<img src=\"" + imageUrl + "\" />");
+    out.println("</a>");
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
