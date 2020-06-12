@@ -114,11 +114,6 @@ function addCommentsToDom(comments) {
     }
 }
 
-function blobstoreAndPrint() {
-    fetchBlobstoreUrlAndShowForm();
-    printingFunction();
-}
-
 /** Recieved the url to post to as well as the images to print and handles
     adding them to the HTML */
 function fetchBlobstoreUrlAndShowForm() {
@@ -185,20 +180,4 @@ function addLandmark(map, lat, lng, title, description) {
   marker.addListener('click', () => {
     infoWindow.open(map, marker);
   });
-}
-
-/** Fetching the user's comment. */
-function addImage() {
-    const responsePromise = fetch('/comment');
-    responsePromise.then(handleResponse);
-}
-
-/** Parses the JSON and calls the function to print it. */
-function handleResponse(response) {
-    json = response.json();
-    json.then(addCommentsToDom);
-}
-
-function printingFunction() {
-  
 }

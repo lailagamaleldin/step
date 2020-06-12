@@ -48,19 +48,19 @@ public class UploadServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("inside get");
+
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/blobstore-upload-url");
 
     Gson gson = new Gson();
-    List<String> str = new ArrayList<>();
-    str.add(uploadUrl);
+    List<String> jsonContents = new ArrayList<>();
+    jsonContents.add(uploadUrl);
 
     for (String url: imgUrls) {
-      str.add(url);
+      jsonContents.add(url);
     }
 
-    String json = gson.toJson(str);
+    String json = gson.toJson(jsonContents);
 
     response.setContentType("text/html");
     response.getWriter().println(json);
@@ -68,22 +68,13 @@ public class UploadServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("inside post");  
-    // Get the URL of the image that the user uploaded to Blobstore.
+
+    // Get the URL of the image that the user uploaded to Blobstore and add 
+    // it to the list of URLs.
     String imageUrl = getUploadedFileUrl(request, "image");
     imgUrls.add(imageUrl);
 
     response.sendRedirect("/gallery.html");
-
-    // Output some HTML that shows the data the user entered.
-    // A real codebase would probably store these in Datastore.
-    PrintWriter out = response.getWriter();
-    out.println("<p>Here's the image you uploadeddddd:</p>");
-    System.out.println("image url");
-    System.out.println(imageUrl);
-    out.println("<a href=\"" + imageUrl + "\">");
-    out.println("<img src=\"" + imageUrl + "\" />");
-    out.println("</a>");
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
