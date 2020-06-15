@@ -78,15 +78,7 @@ public class UploadServlet extends HttpServlet {
     // Get the URL of the image that the user uploaded to Blobstore and add 
     // it to the list of URLs.
     String name = request.getParameter("name-input");
-
-    System.out.println("name in post");
-    System.out.println(name);
-
     String commentText = request.getParameter("text-input");
-
-    System.out.println("text in post");
-    System.out.println(commentText);
-
     String imageUrl = getUploadedFileUrl(request, "image");
     long timestamp = System.currentTimeMillis();
 
