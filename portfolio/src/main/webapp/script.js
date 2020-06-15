@@ -136,24 +136,20 @@ function fetchBlobstoreUrlAndShowForm() {
             const nameElement = document.createElement('li');
             nameElement.className = 'name';
             nameElement.innerText = json[i];
-            console.log('name');
-            console.log(json[i]);
             container.appendChild(nameElement);
 
             // printing the comment
             const commentElement = document.createElement('li');
             commentElement.className = 'comment';
             commentElement.innerText = json[i + 1];
-            console.log('comment');
-            console.log(json[i + 1]);
             container.appendChild(commentElement);
 
+            // printing the image if one exists
             if (json[i + 2] !== "") {
              const imgElement = document.createElement('img');
              imgElement.src = json[i + 2];
              container.appendChild(imgElement);    
             }
-    
 
             // printing the horizontal divider
             const lineElement = document.createElement('hr');
