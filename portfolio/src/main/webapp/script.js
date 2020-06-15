@@ -130,11 +130,41 @@ function fetchBlobstoreUrlAndShowForm() {
 
         // Checking for user comments or uploaded images.
         if (json.length > 1) {
-          var i;  
-          for (i = 1; i < json.length; i++) {
-            const imgElement = document.createElement('img');
-            imgElement.src = json[i];
-            container.appendChild(imgElement);
+          i = 1;  
+          while (i < json.length - 1) {
+            // printing the name
+            const nameElement = document.createElement('li');
+            nameElement.className = 'name';
+            nameElement.innerText = json[i];
+            console.log('name');
+            console.log(json[i]);
+            container.appendChild(nameElement);
+
+            // printing the comment
+            const commentElement = document.createElement('li');
+            commentElement.className = 'comment';
+            commentElement.innerText = json[i + 1];
+            console.log('comment');
+            console.log(json[i + 1]);
+            container.appendChild(commentElement);
+
+            if (json[i + 2] !== "") {
+             const imgElement = document.createElement('img');
+             imgElement.src = json[i + 2];
+             container.appendChild(imgElement);    
+            }
+    
+
+            // printing the horizontal divider
+            const lineElement = document.createElement('hr');
+            lineElement.className = 'horizontal-line';
+            container.appendChild(lineElement);
+
+            // adding spaces after the comment
+            const spaceElement = document.createElement('br');
+            container.appendChild(spaceElement);
+
+            i += 3;
           }
         }
 

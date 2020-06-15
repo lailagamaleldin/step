@@ -61,8 +61,10 @@ public class UploadServlet extends HttpServlet {
     
     // Populating the JSON
     jsonContents.add(uploadUrl);
-    for (String url: imgUrls) {
-      jsonContents.add(url);
+    for (Comment comment: comments) {
+      jsonContents.add(comment.getName());
+      jsonContents.add(comment.getComment());
+      jsonContents.add(comment.getImgUrl());
     }
 
     String json = gson.toJson(jsonContents);
@@ -76,22 +78,24 @@ public class UploadServlet extends HttpServlet {
     // Get the URL of the image that the user uploaded to Blobstore and add 
     // it to the list of URLs.
     String name = request.getParameter("name-input");
+
+    System.out.println("name in post");
+    System.out.println(name);
+
     String commentText = request.getParameter("text-input");
+
+    System.out.println("text in post");
+    System.out.println(commentText);
+
     String imageUrl = getUploadedFileUrl(request, "image");
     long timestamp = System.currentTimeMillis();
 
-    Comment comment = new Comment();
+    Comment comment;
     
-    if (name != null) {
-      comment.setName(name);
-    }
-
-    if (commentText != null) {
-      comment.setComment(commentText);
-    }
-
-    if (imageUrl != null) {
-       comment.setImgUrl(imageUrl); 
+    if (imageUrl == null) {
+      comment = new Comment(name, commentText, "", timestamp);      
+    } else {
+      comment = new Comment(name, commentText, imageUrl, timestamp);
     }
 
     imgUrls.add(imageUrl);

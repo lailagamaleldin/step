@@ -17,25 +17,32 @@ package com.google.sps.data;
 /** A user comment. */
 public final class Comment {
 
-  private final String name = "";
-  private final String comment = "";
-  private final String imgUrl = "";
+  private final String name;
+  private final String comment;
+  private final String imgUrl;
   private final long timestamp;
 
-  public Comment(long timestamp) {
+  public Comment(String name, String comment, String imgUrl, long timestamp) {
+    this.name = name;
+    this.comment = comment;
+    this.imgUrl = imgUrl;
     this.timestamp = timestamp;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public String getName() {
+    return name;
   }
 
-  public void setComment(String comment) {
-    this.comment = comment;
+  public String getComment() {
+    return comment;  
   }
 
-  public void setImgUrl(String url) {
-    this.imgUrl = url;
+  public String getImgUrl() {
+    return imgUrl;  
+  }
+
+  public long getTimestamp() {
+    return timestamp;  
   }
 
   @Override
