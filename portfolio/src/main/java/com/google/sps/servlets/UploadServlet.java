@@ -35,6 +35,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.sps.data.Comment;
 
 /**
  * When the fetch() function requests the /blobstore-upload-url URL, the content of the response is
@@ -44,45 +45,54 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/blobstore-upload-url")
 public class UploadServlet extends HttpServlet {
 
+  // List of the URLs of images
   List<String> imgUrls = new ArrayList<>();
+  List<Comment> comments = new ArrayList<>();
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {  
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    // Setting up blobstore
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/blobstore-upload-url");
 
-    response.setContentType("text/html");
-
-    // Sending upload url to Javascript to serve as action link
-    response.getWriter().println(uploadUrl);
-
-    for (String url: imgUrls) {
-      response.setContentType("text/html");
-      response.getWriter().println(url);    
-      response.getWriter().println(url);
+    Gson gson = new Gson();
+    List<String> jsonContents = new ArrayList<>();
+    
+    // Populating the JSON
+    jsonContents.add(uploadUrl);
+    for (Comment comment: comments) {
+      jsonContents.add(comment.getName());
+      jsonContents.add(comment.getComment());
+      jsonContents.add(comment.getImgUrl());
     }
 
+    String json = gson.toJson(jsonContents);
+    response.setContentType("text/html");
+    response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    // Get the message entered by the user.
-    String message = request.getParameter("message");
-
-    // Get the URL of the image that the user uploaded to Blobstore.
+    // Get the URL of the image that the user uploaded to Blobstore and add 
+    // it to the list of URLs.
+    String name = request.getParameter("name-input");
+    String commentText = request.getParameter("text-input");
     String imageUrl = getUploadedFileUrl(request, "image");
+    long timestamp = System.currentTimeMillis();
+
+    Comment comment;
+    
+    if (imageUrl == null) {
+      comment = new Comment(name, commentText, "", timestamp);      
+    } else {
+      comment = new Comment(name, commentText, imageUrl, timestamp);
+    }
 
     imgUrls.add(imageUrl);
+    comments.add(comment);
 
-    PrintWriter out = response.getWriter();
-    response.getWriter().println("<p>Here's the image you uploaded:</p>");
-    System.out.println("image url");
-
-
-
-    // Redirecting to the upload page.
     response.sendRedirect("/gallery.html");
   }
 

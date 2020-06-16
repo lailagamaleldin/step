@@ -118,29 +118,54 @@ function addCommentsToDom(comments) {
     adding them to the HTML */
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
-      .then((response) => {
-        console.log('response');
-        console.log(response);  
-        return response.text();
+      .then((response) => {   
+        return response.json();
       })
-       .then((imageUploadUrl) => {
-        console.log('imageUploadUrl');   
-        console.log(imageUploadUrl);    
+      .then((json) => { 
         const messageForm = document.getElementById('my-form');
-        messageForm.action = imageUploadUrl;
-        messageForm.classList.remove('hidden');
+        // Setting the form's action to the Blobstore upload URL
+        messageForm.action = json[0];
+
         const container = document.getElementById('container');
 
-        const commentElement = document.createElement('li');
-        commentElement.className = 'comment';
-        commentElement.innerText = imageUploadUrl;
+        // Checking for user comments or uploaded images.
+        if (json.length > 1) {
+          i = 1;  
+          while (i < json.length - 1) {
+            // printing the name
+            const nameElement = document.createElement('li');
+            nameElement.className = 'name';
+            nameElement.innerText = json[i];
+            container.appendChild(nameElement);
 
-        const imgElement = document.createElement('img');
-        imgElement.setAttribute('src', imageUploadUrl);
+            // printing the comment
+            const commentElement = document.createElement('li');
+            commentElement.className = 'comment';
+            commentElement.innerText = json[i + 1];
+            container.appendChild(commentElement);
 
-        container.appendChild(commentElement);
-        container.appendChild(imgElement);
-     });
+            // printing the image if one exists
+            if (json[i + 2] !== "") {
+             const imgElement = document.createElement('img');
+             imgElement.src = json[i + 2];
+             container.appendChild(imgElement);    
+            }
+
+            // printing the horizontal divider
+            const lineElement = document.createElement('hr');
+            lineElement.className = 'horizontal-line';
+            container.appendChild(lineElement);
+
+            // adding spaces after the comment
+            const spaceElement = document.createElement('br');
+            container.appendChild(spaceElement);
+
+            i += 3;
+          }
+        }
+
+        messageForm.classList.remove('hidden');
+      });
 }
 
 /** Function for displaying a map. */
@@ -158,7 +183,7 @@ function createMap() {
   addLandmark(
       map, 41.819559, -71.399020, 'Amy\'s Place',
       'My favorite breakfast place. The yummiest sandwiches you\'ll ever have')
-    addLandmark(
+  addLandmark(
       map, 41.825753, -71.406373, 'The Providence Athaneum',
       'Super aesthetic library. Can be difficult to focus because of how pretty it is...')
       
