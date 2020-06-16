@@ -130,11 +130,37 @@ function fetchBlobstoreUrlAndShowForm() {
 
         // Checking for user comments or uploaded images.
         if (json.length > 1) {
-          var i;  
-          for (i = 1; i < json.length; i++) {
-            const imgElement = document.createElement('img');
-            imgElement.src = json[i];
-            container.appendChild(imgElement);
+          i = 1;  
+          while (i < json.length - 1) {
+            // printing the name
+            const nameElement = document.createElement('li');
+            nameElement.className = 'name';
+            nameElement.innerText = json[i];
+            container.appendChild(nameElement);
+
+            // printing the comment
+            const commentElement = document.createElement('li');
+            commentElement.className = 'comment';
+            commentElement.innerText = json[i + 1];
+            container.appendChild(commentElement);
+
+            // printing the image if one exists
+            if (json[i + 2] !== "") {
+             const imgElement = document.createElement('img');
+             imgElement.src = json[i + 2];
+             container.appendChild(imgElement);    
+            }
+
+            // printing the horizontal divider
+            const lineElement = document.createElement('hr');
+            lineElement.className = 'horizontal-line';
+            container.appendChild(lineElement);
+
+            // adding spaces after the comment
+            const spaceElement = document.createElement('br');
+            container.appendChild(spaceElement);
+
+            i += 3;
           }
         }
 
@@ -157,7 +183,7 @@ function createMap() {
   addLandmark(
       map, 41.819559, -71.399020, 'Amy\'s Place',
       'My favorite breakfast place. The yummiest sandwiches you\'ll ever have')
-    addLandmark(
+  addLandmark(
       map, 41.825753, -71.406373, 'The Providence Athaneum',
       'Super aesthetic library. Can be difficult to focus because of how pretty it is...')
       

@@ -19,12 +19,30 @@ public final class Comment {
 
   private final String name;
   private final String comment;
+  private final String imgUrl;
   private final long timestamp;
 
-  public Comment(String name, String comment, long timestamp) {
-    this.name = name;  
+  public Comment(String name, String comment, String imgUrl, long timestamp) {
+    this.name = name;
     this.comment = comment;
+    this.imgUrl = imgUrl;
     this.timestamp = timestamp;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getComment() {
+    return comment;  
+  }
+
+  public String getImgUrl() {
+    return imgUrl;  
+  }
+
+  public long getTimestamp() {
+    return timestamp;  
   }
 
   @Override
