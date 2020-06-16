@@ -61,9 +61,6 @@ public class UploadServlet extends HttpServlet {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/blobstore-upload-url");
 
-    System.out.println("uploadUrl");
-    System.out.println(uploadUrl);
-
     // Querying all Comment objects in the datastore.
     Query query = new Query("Comment").addSort("timestamp",SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
@@ -76,7 +73,6 @@ public class UploadServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       String name = (String) entity.getProperty("name");  
       String commentText = (String) entity.getProperty("comment");
-      long timeStamp = (long) entity.getProperty("timestamp");
       String imgUrl = (String) entity.getProperty("imgUrl");
 
       jsonContents.add(name);
@@ -99,6 +95,7 @@ public class UploadServlet extends HttpServlet {
     String imageUrl = getUploadedFileUrl(request, "image");
     long timestamp = System.currentTimeMillis();
 
+    // Creating an enitity and setting 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("comment", commentText);
@@ -111,7 +108,6 @@ public class UploadServlet extends HttpServlet {
     }
 
     datastore.put(commentEntity);
-
     response.sendRedirect("/gallery.html");
   }
 
@@ -119,7 +115,7 @@ public class UploadServlet extends HttpServlet {
   private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
-    List<BlobKey> blobKeys = blobs.get("image");
+    List<BlobKey> blobKeys = blobs.get(formInputElementName);
 
     // User submitted form without selecting a file, so we can't get a URL. (dev server)
     if (blobKeys == null || blobKeys.isEmpty()) {

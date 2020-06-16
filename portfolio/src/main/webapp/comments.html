@@ -6,7 +6,7 @@
       <link rel="stylesheet" href="style.css">
       <script src="script.js"></script>
    </head>
-   <body onload="javascript:addComment()">
+   <body onload="fetchBlobstoreUrlAndShowForm()">
       <div id="topnav">
          <div class="link"><a href="index.html">Home</a></div>
          <div class="link"><a href="projects.html">Projects</a></div>
@@ -17,37 +17,33 @@
             href="https://www.linkedin.com/in/laila-gamaleldin-30b699168" target="_blank">Linkedin</a></div>
          <div class="link"><a href="comments.html">Discussion Forum</a></div>
       </div>
+
       <div id="content">
-         <br><br>
-         <h1>Discussion Forum:</h1> 
-         <div id="comment-section">
-            <form id="my-form" action="/comment" method="POST">
-               <h4 id="forum-description">Welcome to the discussion forum! This is a space for collaboration and for collective creativity.
+        
+
+    <h1>Discussion Forum:</h1>
+    <div id="comment-section">
+    <form id="my-form" class="hidden" method="POST" enctype="multipart/form-data">
+      <h4 id="forum-description">Welcome to the discussion forum! This is a space for collaboration and for collective creativity.
                    Have a cool project you're working on? An idea you're excited about? Share it here! Communicate,
                    collaborate, but most importantly, remeber to always be respectful :)
-               </h4>
-               Name:
-               <br>
-               <textarea name="name-input" id="name-input" required></textarea>
-               <br>
-               Comment:
-               <br>
-               <textarea name="text-input" id="text-input" required></textarea>
-               <br>
-               <t>Upload an image:</t>
-               <br>
-               <div class="upload-wrapper">
-               <div class="upload-button"><input type="file" id="file" name="image" accept="image/*"></div>    
-               <div class="upload-button" id="upload-label"><label for="file">Choose File</label></div>        
-               </div>
-               <br>
-               <br>
-               <input type="submit" onclick="addComment()"/>
-            </form>
-            <br>
-         </div>
-      </div>
-      <div id="comment-container">
-      </div>
-   </body>
+      </h4>
+      Name:
+      <br>
+      <textarea name="name-input" id="name-input" required></textarea>
+      <br>Comment:
+      <br>
+      <textarea name="text-input" id="text-input" required></textarea>
+      <br><br>
+      Upload an image:
+      <br>       
+      <input type="file" name="image">
+      <br/><br/>
+      <button>Submit</button>
+      <br><br><br>
+      <div id="container"></div>        
+    </form>
+    </div>
+    </div>
+   </body> 
 </html>
