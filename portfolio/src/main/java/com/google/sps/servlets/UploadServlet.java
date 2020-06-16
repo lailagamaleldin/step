@@ -51,7 +51,6 @@ import com.google.sps.data.Comment;
 @WebServlet("/blobstore-upload-url")
 public class UploadServlet extends HttpServlet {
 
-  List<Comment> comments = new ArrayList<>();
   private static DatastoreService datastore =
          DatastoreServiceFactory.getDatastoreService();
 
@@ -75,15 +74,11 @@ public class UploadServlet extends HttpServlet {
 
     // Populating the JSON
     for (Entity entity : results.asIterable()) {
-      System.out.println("new entity!!!");
-
       String name = (String) entity.getProperty("name");  
       String commentText = (String) entity.getProperty("comment");
       long timeStamp = (long) entity.getProperty("timestamp");
       String imgUrl = (String) entity.getProperty("imgUrl");
-      Comment comment = new Comment(name, commentText, imgUrl, timeStamp);
 
-      comments.add(comment);
       jsonContents.add(name);
       jsonContents.add(commentText);
       jsonContents.add(imgUrl);
@@ -108,21 +103,14 @@ public class UploadServlet extends HttpServlet {
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("comment", commentText);
     commentEntity.setProperty("timestamp", timestamp);
-    commentEntity.setProperty("imgUrl", imageUrl);
-
-    System.out.println("imgUrl");
-    System.out.println(imageUrl);
-
-    Comment comment;
     
     if (imageUrl == null) {
-      comment = new Comment(name, commentText, "", timestamp);     
+      commentEntity.setProperty("imgUrl", "");      
     } else {
-      comment = new Comment(name, commentText, imageUrl, timestamp);
+      commentEntity.setProperty("imgUrl", imageUrl);
     }
 
     datastore.put(commentEntity);
-    comments.add(comment);
 
     response.sendRedirect("/gallery.html");
   }
