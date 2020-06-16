@@ -118,10 +118,10 @@ function addCommentsToDom(comments) {
     adding them to the HTML */
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
-      .then((response) => {   
+      .then((response) => {     
         return response.json();
       })
-      .then((json) => { 
+      .then((json) => {  
         const messageForm = document.getElementById('my-form');
         // Setting the form's action to the Blobstore upload URL
         messageForm.action = json[0];
@@ -145,7 +145,7 @@ function fetchBlobstoreUrlAndShowForm() {
             container.appendChild(commentElement);
 
             // printing the image if one exists
-            if (json[i + 2] !== "") {
+            if (json[i + 2] !== "" || json[i + 2] !== null) {
              const imgElement = document.createElement('img');
              imgElement.src = json[i + 2];
              container.appendChild(imgElement);    

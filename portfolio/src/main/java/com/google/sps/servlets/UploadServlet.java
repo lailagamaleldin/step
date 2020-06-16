@@ -22,6 +22,12 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,9 +51,9 @@ import com.google.sps.data.Comment;
 @WebServlet("/blobstore-upload-url")
 public class UploadServlet extends HttpServlet {
 
-  // List of the URLs of images
-  List<String> imgUrls = new ArrayList<>();
   List<Comment> comments = new ArrayList<>();
+  private static DatastoreService datastore =
+         DatastoreServiceFactory.getDatastoreService();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -56,15 +62,31 @@ public class UploadServlet extends HttpServlet {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     String uploadUrl = blobstoreService.createUploadUrl("/blobstore-upload-url");
 
+    System.out.println("uploadUrl");
+    System.out.println(uploadUrl);
+
+    // Querying all Comment objects in the datastore.
+    Query query = new Query("Comment").addSort("timestamp",SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
     Gson gson = new Gson();
     List<String> jsonContents = new ArrayList<>();
-    
-    // Populating the JSON
     jsonContents.add(uploadUrl);
-    for (Comment comment: comments) {
-      jsonContents.add(comment.getName());
-      jsonContents.add(comment.getComment());
-      jsonContents.add(comment.getImgUrl());
+
+    // Populating the JSON
+    for (Entity entity : results.asIterable()) {
+      System.out.println("new entity!!!");
+
+      String name = (String) entity.getProperty("name");  
+      String commentText = (String) entity.getProperty("comment");
+      long timeStamp = (long) entity.getProperty("timestamp");
+      String imgUrl = (String) entity.getProperty("imgUrl");
+      Comment comment = new Comment(name, commentText, imgUrl, timeStamp);
+
+      comments.add(comment);
+      jsonContents.add(name);
+      jsonContents.add(commentText);
+      jsonContents.add(imgUrl);
     }
 
     String json = gson.toJson(jsonContents);
@@ -82,15 +104,24 @@ public class UploadServlet extends HttpServlet {
     String imageUrl = getUploadedFileUrl(request, "image");
     long timestamp = System.currentTimeMillis();
 
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("comment", commentText);
+    commentEntity.setProperty("timestamp", timestamp);
+    commentEntity.setProperty("imgUrl", imageUrl);
+
+    System.out.println("imgUrl");
+    System.out.println(imageUrl);
+
     Comment comment;
     
     if (imageUrl == null) {
-      comment = new Comment(name, commentText, "", timestamp);      
+      comment = new Comment(name, commentText, "", timestamp);     
     } else {
       comment = new Comment(name, commentText, imageUrl, timestamp);
     }
 
-    imgUrls.add(imageUrl);
+    datastore.put(commentEntity);
     comments.add(comment);
 
     response.sendRedirect("/gallery.html");
