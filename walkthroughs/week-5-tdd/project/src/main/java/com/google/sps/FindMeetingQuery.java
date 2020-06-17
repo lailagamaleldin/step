@@ -53,6 +53,22 @@ public final class FindMeetingQuery {
       // case where event ends after conflicting events (surrounding it)
         // here, you want to split the event in two    
       if (event.end() > conflictingEvent.end()) {
+        // event: 4 - 10
+        // conflictingEvent: 6-8
+
+        // split into before    
+        long firstDuration = conflictingEvent.start() - event.start();
+        if (firstDuration >= duration) {
+          TimeRange firstEvent = new TimeRange(event.start(), firstDuration);
+          alteredEvents.add(firstEvent);    
+        }
+
+        // split into after
+        long secondDuration = event.end() - conflictingEvent.end();
+        if (secondDuration >= duration) {
+          TimeRange secondEvent = new TimeRange(conflictingEvent.end(), secondDuration);
+          alteredEvents.add(secondEvent);  
+        }
 
       // case where event ends before or at the same time as conflicting event 
         // in this case, you want to end the event whenever the new one starts
@@ -65,7 +81,13 @@ public final class FindMeetingQuery {
       }
     // both events start at the same time
     } else {
-
+      if (event.duration() > conflictingEvent.duration()) {
+        long newDuration = event.end() - conflictingEvent.end();
+        if (newDuration >= duration) {
+          TimeRange alteredEvent = new TimeRange(conflictingEvent.end(), newDuration);
+          alteredEvents.add(alteredEvent);    
+        }
+      }
     }
 
     return alteredEvent;
