@@ -25,6 +25,7 @@ public final class FindMeetingQuery {
 
   public final static int DAY_LENGTH = 24 * 60;  
 
+  // Method for checking of there is overlap between the guests of two events
   private Boolean attendeesOverlap(Collection<String> eventOneAttendees, 
                                    Set<String> eventTwoAttendees) {
 
@@ -35,51 +36,72 @@ public final class FindMeetingQuery {
     }
     return false;
   }
+  
+  // Method for removing overlap by starting the event later
+  private TimeRange cutEventFromStart(TimeRange conflictingEvent,
+                                      TimeRange proposedEvent, long neededDuration) {
+    
+    // checking that the overlapping event isn't longer than the proposed event
+    if (conflictingEvent.end() < proposedEvent.end()) {
+
+      int newDuration = proposedEvent.end() - conflictingEvent.end();
+      if (newDuration >= neededDuration) { 
+        return TimeRange.fromStartDuration(conflictingEvent.end(), newDuration); 
+      }      
+    }
+
+    return null;                                        
+  }
+
+   // Method for removing overlap by evending the event earlier
+   private TimeRange cutEventFromEnd(TimeRange conflictingEvent,
+                                       TimeRange proposedEvent, long neededDuration) {
+
+     int newDuration = conflictingEvent.start() - proposedEvent.start();
+     if (newDuration >= neededDuration) {
+       return TimeRange.fromStartDuration(proposedEvent.start(), newDuration);    
+     }
+
+     return null;
+   }
+
+//   private Collection<TimeRange> splitEventInTwo(TimeRange conflictingEvent,
+//                                                 TimeRange proposedEvent, long neededDuration) {
+
+//   }
 
   private Collection<TimeRange> removeOverlap(TimeRange conflictingEvent, 
-                                              TimeRange event, long duration) {
+                                              TimeRange proposedEvent, long neededDuration) {
     
     Collection<TimeRange> alteredEvents = new ArrayList<>();
 
-    // conflicting event starts before the event to be chopped
-    if (conflictingEvent.start() < event.start()) {  
+    // event attendee is already registered for starts before the event to be chopped
+    if (conflictingEvent.start() < proposedEvent.start()) {  
+
+      TimeRange alteredEvent = cutEventFromStart(conflictingEvent, proposedEvent, neededDuration);
       
-      /** if the conflicting event ends before, reduce the start to 
-          when the conflicting event ends
-          check if the new duration is long enough, in which case add it 
-      */
-      if (conflictingEvent.end() < event.end()) {
-        // 4 - 6
-        // 5 - 7
-        int newDuration = event.end() - conflictingEvent.end();
-        if (newDuration >= duration) {
-          TimeRange alteredEvent = 
-            TimeRange.fromStartDuration(conflictingEvent.end(), newDuration);
-          alteredEvents.add(alteredEvent);  
-        }      
-      }   
+      if (alteredEvent != null) {
+        alteredEvents.add(alteredEvent);
+      }
 
-    // conflicting event starts after the event to be chopped
-    } else if (conflictingEvent.start() > event.start()) { 
+    // event attendee is already registered for starts after the event to be chopped
+    } else if (conflictingEvent.start() > proposedEvent.start()) { 
 
-      /** case where event ends after conflicting events (surrounding it)
-         here, you want to split the event in two */   
-      if (event.end() > conflictingEvent.end()) {
-
-        // event: 4 - 10
-        // conflictingEvent: 6-8
+      // case where the prposed event starts before and ends after the conflicting event,
+      // meaning it needs to be split in two   
+      if (proposedEvent.end() > conflictingEvent.end()) {
 
         // split into before    
-        int firstDuration = conflictingEvent.start() - event.start();
-        if (firstDuration >= duration) {
+        int firstDuration = conflictingEvent.start() - proposedEvent.start();
+        if (firstDuration >= neededDuration) {
           TimeRange firstEvent =
-            TimeRange.fromStartDuration(event.start(), firstDuration);
+            TimeRange.fromStartDuration(proposedEvent.start(), firstDuration);
           alteredEvents.add(firstEvent);    
         }
 
         // split into after
-        int secondDuration = event.end() - conflictingEvent.end();
-        if (secondDuration >= duration) {
+        int secondDuration = proposedEvent.end() - conflictingEvent.end();
+        if (secondDuration >= neededDuration) {
           TimeRange secondEvent =
             TimeRange.fromStartDuration(conflictingEvent.end(), secondDuration);
           alteredEvents.add(secondEvent);  
@@ -89,26 +111,20 @@ public final class FindMeetingQuery {
          in this case, you want to end the event whenever the new one starts 
       */
       } else {
-        int newDuration = conflictingEvent.start() - event.start();
+        int newDuration = conflictingEvent.start() - proposedEvent.start();
 
-        System.out.println("newDuration");
-        System.out.println(newDuration);
-        System.out.println("duration");
-        System.out.println(duration);
-
-        if (newDuration >= duration) {
+        if (newDuration >= neededDuration) {
           TimeRange alteredEvent =
-            TimeRange.fromStartDuration(event.start(), newDuration);
+            TimeRange.fromStartDuration(proposedEvent.start(), newDuration);
           alteredEvents.add(alteredEvent);    
         }
       }
     // both events start at the same time
     } else {
-      System.out.println("3");
 
-      if (event.duration() > conflictingEvent.duration()) {
-        int newDuration = event.end() - conflictingEvent.end();
-        if (newDuration >= duration) {
+      if (proposedEvent.duration() > conflictingEvent.duration()) {
+        int newDuration = proposedEvent.end() - conflictingEvent.end();
+        if (newDuration >= neededDuration) {
           TimeRange alteredEvent =
             TimeRange.fromStartDuration(conflictingEvent.end(), newDuration);
           alteredEvents.add(alteredEvent);    
@@ -119,50 +135,59 @@ public final class FindMeetingQuery {
     return alteredEvents;
   }
 
+  /**
+   * Method for querying appropriate time slots based on the request length and attendees'
+   * schedules.
+   */
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {    
 
     long duration = request.getDuration();
     Collection<String> attendees = request.getAttendees();
 
+    // checking for invalid meeting requests
     if (duration <= 0 || duration > DAY_LENGTH) {
       return new ArrayList<>();  
     }
 
+    // setting the initial proposed times to be the entire day
+    //  this implementation is built upon eliminating conflicts as they come up
     TimeRange allDay = TimeRange.fromStartDuration(0, DAY_LENGTH);
     Collection<TimeRange> proposedTimes = new ArrayList<>(Arrays.asList(allDay));
-    Collection<TimeRange> timeRangeCopy = new ArrayList<>();
+    Collection<TimeRange> proposedTimesCopy = new ArrayList<>();
 
 
-    for (Event event: events) { 
-      /**
-       there are attendees of the event who are going to another event so
-       we want to remove that timeframe from the validTimes  
-      */
+    // looping through existing events
+    for (Event event: events) {
+      // checking for attendee overlap   
       if (attendeesOverlap(attendees, event.getAttendees())) {
 
         TimeRange eventTimeRange = event.getWhen();
 
         for (TimeRange proposedTimeRange: proposedTimes) {
-
+          
+          // checking for time overlap
           if (eventTimeRange.overlaps(proposedTimeRange) ||
                 eventTimeRange.equals(proposedTimeRange)) {
-
-            timeRangeCopy.remove(proposedTimeRange);
             
+            // removing overlapping event and reconfiguring it to remove overlap
+            proposedTimesCopy.remove(proposedTimeRange);
             Collection<TimeRange> updatedTimeRanges = 
              removeOverlap(eventTimeRange, proposedTimeRange, duration);
             
             for (TimeRange timeRange: updatedTimeRanges) { 
-              timeRangeCopy.add(timeRange);
+              proposedTimesCopy.add(timeRange);
             }
 
+            // returning when done looping through attendee's events, meaning when all conflicts
+            // have been resolved
             if (event.equals(events.toArray()[events.size() - 1])) {
-              return timeRangeCopy;   
+              return proposedTimesCopy;   
             }
           }
 
         }
-        proposedTimes = timeRangeCopy;
+        // updating the proposed so that the time conflicts that have been detected are removed
+        proposedTimes = proposedTimesCopy;
       }
     }
     return proposedTimes;
