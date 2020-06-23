@@ -42,7 +42,7 @@ public final class FindMeetingQuery {
     Collection<TimeRange> alteredEvents = new ArrayList<>();
 
     // conflicting event starts before the event to be chopped
-    if (conflictingEvent.start() < event.start()) {
+    if (conflictingEvent.start() < event.start()) {  
       
       /** if the conflicting event ends before, reduce the start to 
           when the conflicting event ends
@@ -60,11 +60,12 @@ public final class FindMeetingQuery {
       }   
 
     // conflicting event starts after the event to be chopped
-    } else if (conflictingEvent.start() > event.start()) {
+    } else if (conflictingEvent.start() > event.start()) { 
 
       /** case where event ends after conflicting events (surrounding it)
          here, you want to split the event in two */   
       if (event.end() > conflictingEvent.end()) {
+
         // event: 4 - 10
         // conflictingEvent: 6-8
 
@@ -88,7 +89,13 @@ public final class FindMeetingQuery {
          in this case, you want to end the event whenever the new one starts 
       */
       } else {
-        int newDuration = event.start() - conflictingEvent.start();
+        int newDuration = conflictingEvent.start() - event.start();
+
+        System.out.println("newDuration");
+        System.out.println(newDuration);
+        System.out.println("duration");
+        System.out.println(duration);
+
         if (newDuration >= duration) {
           TimeRange alteredEvent =
             TimeRange.fromStartDuration(event.start(), newDuration);
@@ -97,6 +104,8 @@ public final class FindMeetingQuery {
       }
     // both events start at the same time
     } else {
+      System.out.println("3");
+
       if (event.duration() > conflictingEvent.duration()) {
         int newDuration = event.end() - conflictingEvent.end();
         if (newDuration >= duration) {
@@ -111,44 +120,51 @@ public final class FindMeetingQuery {
   }
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {    
-   
+
     long duration = request.getDuration();
     Collection<String> attendees = request.getAttendees();
 
     if (duration <= 0 || duration > DAY_LENGTH) {
-      throw new IllegalArgumentException("Invalid request duration.");  
+      return new ArrayList<>();  
     }
 
     TimeRange allDay = TimeRange.fromStartDuration(0, DAY_LENGTH);
     Collection<TimeRange> proposedTimes = new ArrayList<>(Arrays.asList(allDay));
-    
-    for (Event event: events) {
+    Collection<TimeRange> timeRangeCopy = new ArrayList<>();
+
+
+    for (Event event: events) { 
       /**
        there are attendees of the event who are going to another event so
        we want to remove that timeframe from the validTimes  
       */
       if (attendeesOverlap(attendees, event.getAttendees())) {
+
         TimeRange eventTimeRange = event.getWhen();
 
-        Collection<TimeRange> timeRangeCopy = proposedTimes;
-
-        for (TimeRange proposedTimeRange: proposedTimes) { 
+        for (TimeRange proposedTimeRange: proposedTimes) {
 
           if (eventTimeRange.overlaps(proposedTimeRange) ||
                 eventTimeRange.equals(proposedTimeRange)) {
+
             timeRangeCopy.remove(proposedTimeRange);
+            
             Collection<TimeRange> updatedTimeRanges = 
              removeOverlap(eventTimeRange, proposedTimeRange, duration);
+            
+            for (TimeRange timeRange: updatedTimeRanges) { 
+              timeRangeCopy.add(timeRange);
+            }
 
-            for (TimeRange timeRange: updatedTimeRanges) {
-              timeRangeCopy.add(timeRange);  
+            if (event.equals(events.toArray()[events.size() - 1])) {
+              return timeRangeCopy;   
             }
           }
+
         }
         proposedTimes = timeRangeCopy;
       }
     }
-
     return proposedTimes;
   }
 }
