@@ -69,59 +69,14 @@ function addRandomFunFact() {
 	factContainer.innerText = fact;
 }
 
-/** Fetching the user's comment. */
-function addComment() {
-    const responsePromise = fetch('/comment');
-    responsePromise.then(handleResponse);
-}
-
-/** Parses the JSON and calls the function to print it. */
-function handleResponse(response) {
-    json = response.json();
-    json.then(addCommentsToDom);
-}
-
-/** Adds a random quote to the DOM. */
-function addCommentsToDom(comments) {
-    const quoteContainer = document.getElementById('comment-container');
-
-    i = 0;
-
-    while (i < comments.length - 1) {
-
-      // printing the name
-      const nameElement = document.createElement('li');
-      nameElement.className = 'name';
-      nameElement.innerText = comments[i];
-      quoteContainer.appendChild(nameElement);
-
-      // printing the comment
-      const commentElement = document.createElement('li');
-      commentElement.className = 'comment';
-      commentElement.innerText = comments[i + 1];
-      quoteContainer.appendChild(commentElement);
-
-      // printing the horizontal divider
-      const lineElement = document.createElement('hr');
-      lineElement.className = 'horizontal-line';
-      quoteContainer.appendChild(lineElement);
-
-      // adding spaces after the comment
-      const spaceElement = document.createElement('br');
-      quoteContainer.appendChild(spaceElement);
-      
-      i += 2;
-    }
-}
-
 /** Recieved the url to post to as well as the images to print and handles
     adding them to the HTML */
 function fetchBlobstoreUrlAndShowForm() {
   fetch('/blobstore-upload-url')
-      .then((response) => {   
+      .then((response) => {     
         return response.json();
       })
-      .then((json) => { 
+      .then((json) => {  
         const messageForm = document.getElementById('my-form');
         // Setting the form's action to the Blobstore upload URL
         messageForm.action = json[0];
@@ -145,7 +100,7 @@ function fetchBlobstoreUrlAndShowForm() {
             container.appendChild(commentElement);
 
             // printing the image if one exists
-            if (json[i + 2] !== "") {
+            if (json[i + 2] !== "" || json[i + 2] !== null) {
              const imgElement = document.createElement('img');
              imgElement.src = json[i + 2];
              container.appendChild(imgElement);    
