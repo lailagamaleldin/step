@@ -42,8 +42,11 @@ public final class FindMeetingQueryTest {
   private static final int TIME_0930AM = TimeRange.getTimeInMinutes(9, 30);
   private static final int TIME_1000AM = TimeRange.getTimeInMinutes(10, 0);
   private static final int TIME_1100AM = TimeRange.getTimeInMinutes(11, 00);
+  private static final int TIME_1000PM = TimeRange.getTimeInMinutes(20, 00);
 
+  private static final int DURATION_1_MINUTE = 1;
   private static final int DURATION_30_MINUTES = 30;
+  private static final int DURATION_48_MINUTES = 48;
   private static final int DURATION_60_MINUTES = 60;
   private static final int DURATION_90_MINUTES = 90;
   private static final int DURATION_1_HOUR = 60;
@@ -174,7 +177,7 @@ public final class FindMeetingQueryTest {
     Assert.assertEquals(expected, actual);
   }
 
-  @Test
+   @Test
   public void doubleBookedPeople() {
     // Have one person, but have them registered to attend two events at the same time.
     //
@@ -267,6 +270,119 @@ public final class FindMeetingQueryTest {
 
     Collection<TimeRange> actual = query.query(events, request);
     Collection<TimeRange> expected = Arrays.asList();
+
+    Assert.assertEquals(expected, actual);
+  }
+
+
+  @Test
+  public void fullDay() {
+    // Test for when the entire day is already booked.
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_1100AM, true),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartEnd(TIME_1100AM, TimeRange.END_OF_DAY, true),
+            Arrays.asList(PERSON_B)));    
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected = Arrays.asList();
+
+    Assert.assertEquals(expected, actual);  
+  }
+
+
+  @Test
+  public void backToBackMeetings() {
+    // Have attendees with back-to-back meetings.
+    //
+    // Events  : |---A---||--A--|
+    // Day     : |---------------------|
+    // Options :                |------|
+
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_1000AM, true),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartEnd(TIME_1000AM, TIME_1100AM, false),
+            Arrays.asList(PERSON_A)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_1_HOUR);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected = Arrays.asList(
+        TimeRange.fromStartEnd(TIME_1100AM, TimeRange.END_OF_DAY, true));
+
+    Assert.assertEquals(expected, actual);    
+  }
+
+
+  @Test
+  public void meetingsNotOnTheHour() {
+    // Meetings end right on the hour, meaning availability needs to be just a minute after
+    // the start of the hour.
+    //
+    // Events  :    |---A--|    |-A-|
+    // Day     : |---------------------|
+    // Options : |--|      |----|   |--|
+
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, true),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartDuration(TIME_1100AM + DURATION_1_MINUTE, DURATION_48_MINUTES),
+            Arrays.asList(PERSON_A)));
+    
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected = Arrays.asList(
+        TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+        TimeRange.fromStartEnd(TIME_0900AM + DURATION_1_MINUTE, TIME_1100AM, true),
+        TimeRange.fromStartEnd(TIME_1100AM + DURATION_48_MINUTES + DURATION_1_MINUTE, 
+            TimeRange.END_OF_DAY, true));
+
+    Assert.assertEquals(expected, actual);  
+  }
+
+
+  @Test
+  public void startAndEndOfDayMeetings() {
+    // Meetings at the start and end of the day. Schedulling should happen between them.
+    //
+    // Events  : |--A--|          |--A-|
+    // Day     : |---------------------|
+	// Options :       |----------|
+
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0800AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartEnd(TIME_1000PM, TimeRange.END_OF_DAY, true),
+            Arrays.asList(PERSON_A)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_90_MINUTES);
+
+    Collection<TimeRange> actual = query.query(events, request);
+    Collection<TimeRange> expected = Arrays.asList(
+        TimeRange.fromStartEnd(TIME_0800AM, TIME_1000PM, false));
+
+    Assert.assertEquals(expected, actual);        
+  }
+
+  
+  @Test
+  public void noOptionsForTooShortOfARequest() {
+    // Tests for time requests that are too small
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), 0);
+
+    Collection<TimeRange> actual = query.query(NO_EVENTS, request);
+    Collection<TimeRange> expected = Arrays.asList();
+
+    Assert.assertEquals(expected, actual);
+
+    request = new MeetingRequest(Arrays.asList(PERSON_A), -1);
+
+    actual = query.query(NO_EVENTS, request);
+    expected = Arrays.asList();
 
     Assert.assertEquals(expected, actual);
   }
