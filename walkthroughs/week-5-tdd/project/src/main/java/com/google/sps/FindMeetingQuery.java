@@ -43,7 +43,7 @@ public final class FindMeetingQuery {
                                       TimeRange proposedEvent, long neededDuration) {
     
     // checking that the overlapping event isn't longer than the proposed event
-    if (conflictingEvent.end() < proposedEvent.end()) {
+    if (!endsAfter(conflictingEvent, proposedEvent)) {
 
       int newDuration = proposedEvent.end() - conflictingEvent.end();
       if (newDuration >= neededDuration) { 
