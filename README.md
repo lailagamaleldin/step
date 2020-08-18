@@ -2,14 +2,8 @@
 
 This repo contains Laila's portfolio and STEP projects.
 
-This repo contains the projects you'll work on for the first half of STEP.
-This work is based on the [Google Software Product Sprint](https://g.co/softwareproductsprint) program.
-
-To get started:
-
-- Login to [Google Cloud Shell](https://ssh.cloud.google.com/cloudshell/editor)
-- Clone this repo: `cd; git clone https://github.com/googleinterns/step.git`
-- Open the GitHub setup walkthrough: `teachme ~/step/walkthroughs/week-1-setup/github-setup-walkthrough.md`
-  - If the tutorial panel does not open or display the walkthrough contents, try refreshing the page.
-
-Then follow the on-screen instructions to set up your repo.
+To run:
+1) Clone this repo onto your device. 
+2) Using terminal, navigate to the directory the repo was cloned.
+3) Run the command 'mvn package:appengine run'.
+4) Open a web browser and navigate to localhost:8080
