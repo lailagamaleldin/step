@@ -2,14 +2,14 @@
 
 This repo contains Laila's portfolio and STEP projects.
 
-This repo contains the projects you'll work on for the first half of STEP.
-This work is based on the [Google Software Product Sprint](https://g.co/softwareproductsprint) program.
+To run the portfolio:
+1) Clone this repo.
+2) In terminal, navigate to 'portfolio'.
+3) Run 'mvn package appengine:run'.
+4) In a web browser, navigate to localhost:8000.
 
-To get started:
 
-- Login to [Google Cloud Shell](https://ssh.cloud.google.com/cloudshell/editor)
-- Clone this repo: `cd; git clone https://github.com/googleinterns/step.git`
-- Open the GitHub setup walkthrough: `teachme ~/step/walkthroughs/week-1-setup/github-setup-walkthrough.md`
-  - If the tutorial panel does not open or display the walkthrough contents, try refreshing the page.
-
-Then follow the on-screen instructions to set up your repo.
+To run the tests for the calendar algorithm:
+1) Clone this repo.
+2) Navigate to 'walkthroughs/week-5-tdd/portfolio'.
+3) Run 'mvn test'.
